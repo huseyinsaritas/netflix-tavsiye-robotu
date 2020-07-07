@@ -7,7 +7,7 @@ import { Button } from "../components/button.component";
 import FILMS from "../data/films100.json";
 
 export default function ChooseFavorites({ navigation }: any) {
-  const [selectedFilms, setSelectedFilms] = useState([] as any);
+  const [selectedFilms, setSelectedFilms] = useState([] as string[]);
 
   const FilmItem = ({ film }: any) => {
     const selected = selectedFilms.includes(film.id);
@@ -22,15 +22,13 @@ export default function ChooseFavorites({ navigation }: any) {
 
   const selectFilm = (id: string) => {
     let _selectedFilms = [...selectedFilms];
-
-    if (_selectedFilms.includes(id)) {
-      const i = _selectedFilms.indexOf(id);
-      _selectedFilms.splice(i, 1);
-      setSelectedFilms(_selectedFilms);
-    } else {
+    const i = _selectedFilms.indexOf(id);
+    if (i === -1) {
       _selectedFilms.push(id);
-      setSelectedFilms(_selectedFilms);
+    } else {
+      _selectedFilms.splice(i, 1);
     }
+    setSelectedFilms(_selectedFilms);
   };
 
   const onPress = () => {
@@ -42,7 +40,7 @@ export default function ChooseFavorites({ navigation }: any) {
       <Text style={styles.pageTitle}>Favori Seçin</Text>
       <Text style={styles.pageDesc}>Biraz yardımcı olmanız için en az {selectedFilms.length}/3 tane beğendiğiniz film veya diziyi işaretleyin.</Text>
       <FlatList data={FILMS} style={styles.films} numColumns={3} renderItem={({ item }) => <FilmItem film={item} />} keyExtractor={item => item.id} />
-      <Button title="GET RECOMMENDATION" onPress={onPress} />
+      {selectedFilms.length > 2 ? <Button title="TAVSİYE AL" onPress={onPress} /> : null}
     </View>
   );
 }
