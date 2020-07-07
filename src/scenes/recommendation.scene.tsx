@@ -8,10 +8,13 @@ import FILMS from "../data/films100.json";
 
 interface IRecommendation {
   navigation: any;
-  recommedationClick: (filmId: number) => void;
 }
 
-const Recommendation: React.FC<IRecommendation> = ({ navigation, recommedationClick }) => {
+const Recommendation: React.FC<IRecommendation> = ({ navigation }: any) => {
+  const recommedationClick = (filmId: string) => {
+    navigation.navigate("FilmDetail", { filmId });
+  };
+
   const RecommendedFilm = ({ filmId }: any) => {
     return (
       <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(filmId)}>
@@ -22,7 +25,7 @@ const Recommendation: React.FC<IRecommendation> = ({ navigation, recommedationCl
 
   const FilmItem = ({ film }: any) => {
     return (
-      <TouchableOpacity style={styles.film} onPress={() => film.id} activeOpacity={0.8}>
+      <TouchableOpacity style={styles.film} onPress={() => recommedationClick(film.id)} activeOpacity={0.8}>
         <Image style={styles.filmPoster} source={{ uri: "https://i.pinimg.com/736x/7c/0c/f2/7c0cf26a8a1e7b9fe8a1e393f28177f1.jpg" }} />
       </TouchableOpacity>
     );
@@ -31,9 +34,9 @@ const Recommendation: React.FC<IRecommendation> = ({ navigation, recommedationCl
   return (
     <View style={[LAYOUT, styles.layout]}>
       <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
-      <RecommendedFilm filmId={81251947} />
-      <Text style={styles.pageDesc}>Bu filmleri de izleyebilirsiniz.</Text>
-      <FlatList data={FILMS} style={styles.films} numColumns={3} renderItem={({ item }) => <FilmItem film={item} />} keyExtractor={item => item.id} />
+      <RecommendedFilm style={styles.recommendedMovie} filmId={81251947} />
+      <Text style={styles.similarMovies}>BENZERLERİ</Text>
+      <FlatList data={FILMS.slice(0, 3)} numColumns={3} renderItem={({ item }) => <FilmItem film={item} />} keyExtractor={item => item.id} />
     </View>
   );
 };
@@ -49,13 +52,15 @@ const styles = StyleSheet.create({
     fontSize: 32,
     textAlign: "center"
   },
-  pageDesc: {
+  recommendedMovie: {
+    margin: 10
+  },
+  similarMovies: {
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
-    textAlign: "center"
-  },
-  films: {
-    marginTop: 20
+    marginTop: 20,
+    marginLeft: 6,
+    marginBottom: 6
   },
   film: {
     position: "relative",
@@ -83,15 +88,15 @@ const styles = StyleSheet.create({
     zIndex: 90
   },
   recommendedFilm: {
-    position: "relative",
-    flex: 1,
-    borderWidth: 1,
-    borderColor: "#eee",
     borderRadius: 6,
-    margin: 6
+    margin: 6,
+    alignItems: "center",
+    justifyContent: "center"
   },
   recommendedFilmPoster: {
-    width: 100,
+    borderColor: "#eee",
+    borderWidth: 2,
+    width: 200,
     height: 260,
     resizeMode: "cover",
     borderRadius: 6
