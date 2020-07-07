@@ -5,7 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 import Intro from "../scenes/intro.scene";
-import ChooseFilms from "../scenes/choose-films.scene";
+import ChooseAgeRange from "../scenes/choose-age-range.scene";
+import ChooseFavorites from "../scenes/choose-favorites.scene";
 
 export const AppNavigation = () => (
 
@@ -16,8 +17,11 @@ export const AppNavigation = () => (
                 name="Intro"
                 component={Intro} />
             <Stack.Screen
-                name="ChooseFilms"
-                component={ChooseFilms} />
+                name="ChooseAgeRange"
+                component={ChooseAgeRange} />
+            <Stack.Screen
+                name="ChooseFavorites"
+                component={ChooseFavorites} />
         </Stack.Navigator>
 
     </NavigationContainer>

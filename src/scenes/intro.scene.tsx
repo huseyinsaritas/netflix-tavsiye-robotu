@@ -8,7 +8,7 @@ import { Button } from "../components/button.component";
 export default function Intro({ navigation }: any) {
 
   const onPress = () => {
-    navigation.navigate('ChooseFilms');
+    navigation.navigate('ChooseAgeRange');
   }
 
   return (

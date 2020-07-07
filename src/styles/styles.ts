@@ -7,6 +7,8 @@ export const COLORS = {
 
 export const FONTS = {
     bungee: 'Bungee_400Regular',
+    cabin400: 'Cabin_400Regular',
+    cabin700: 'Cabin_700Bold',
 }
 
 export const LAYOUT = {
