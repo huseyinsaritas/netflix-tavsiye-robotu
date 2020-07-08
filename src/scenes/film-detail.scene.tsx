@@ -1,20 +1,33 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from "react-native";
-
-import { COLORS, FONTS, LAYOUT } from "../styles/styles";
-import { Button } from "../components/button.component";
-
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, Linking } from "react-native";
+import Button from "../components/Button";
 import FILMS from "../data/films100.json";
+import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
-interface IFilmDetail {
-  filmId: string;
-}
-
-const FilmDetail: React.FC<IFilmDetail> = ({ filmId }) => {
+const FilmDetail = ({ navigation, route }: any) => {
+  const { filmId } = route.params;
+  const catchFilm = FILMS.find(film => film.id === filmId);
+  console.log(catchFilm);
+  const onPress = () => {
+    Linking.openURL("https://www.netflix.com/tr-en/title/" + filmId);
+  };
   return (
     <View style={[LAYOUT, styles.layout]}>
       <View style={styles.moovie}>
-        <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: "https://i.pinimg.com/736x/7c/0c/f2/7c0cf26a8a1e7b9fe8a1e393f28177f1.jpg" }} />
+        <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: FILMS[0].image }} />
+      </View>
+      <View style={styles.detailContent}>
+        <Text style={styles.info}>{FILMS[0].year}</Text>
+        <Text style={styles.info}>{FILMS[0].maturity}</Text>
+        <Text style={styles.info}>{FILMS[0].duration}</Text>
+      </View>
+      <Text style={styles.info}>{FILMS[0].synopsis}</Text>
+      <View style={styles.detailHeaders}>
+        <Text style={styles.headerInfo}>Kategoriler: {FILMS[0].genres.join(", ")}</Text>
+        <Text style={styles.headerInfo}>Başroldekiler: {FILMS[0].starring.join(", ")}</Text>
+      </View>
+      <View style={styles.watchNetflix}>
+        <Button title="NETFLIX'TE IZLE" style={styles.detailButton} onPress={onPress} />
       </View>
     </View>
   );
@@ -42,6 +55,43 @@ const styles = StyleSheet.create({
     height: 260,
     resizeMode: "cover",
     borderRadius: 6
+  },
+  info: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    marginTop: 20,
+    marginLeft: 6,
+    marginBottom: 6
+  },
+  headerInfo: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    margin: 6
+  },
+  detailContent: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center"
+  },
+  detailButton: {
+    position: "absolute",
+    bottom: 0
+  },
+  detailButtonText: {
+    textTransform: "uppercase",
+    textAlign: "center",
+    width: "100%"
+  },
+  detailHeaders: {
+    alignItems: "flex-start",
+    justifyContent: "space-evenly"
+  },
+  watchNetflix: {
+    textAlign: "center",
+    position: "absolute",
+    bottom: 10,
+    left: 1,
+    right: 1
   }
 });
 
