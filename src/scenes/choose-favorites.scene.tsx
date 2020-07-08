@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from "react-native";
 
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
-import { Button } from "../components/button.component";
-
+import Button from "../components/Button";
 import FILMS from "../data/films100.json";
 
-export default function ChooseFavorites({ navigation }: any) {
+const ChooseFavorites = ({ navigation }: any) => {
   const [selectedFilms, setSelectedFilms] = useState([] as string[]);
 
   const FilmItem = ({ film }: any) => {
@@ -40,10 +39,14 @@ export default function ChooseFavorites({ navigation }: any) {
       <Text style={styles.pageTitle}>Favori Seçin</Text>
       <Text style={styles.pageDesc}>Biraz yardımcı olmanız için en az {selectedFilms.length}/3 tane beğendiğiniz film veya diziyi işaretleyin.</Text>
       <FlatList data={FILMS} style={styles.films} numColumns={3} renderItem={({ item }) => <FilmItem film={item} />} keyExtractor={item => item.id} />
-      {selectedFilms.length > 2 ? <Button title="TAVSİYE AL" onPress={onPress} /> : null}
+      {selectedFilms.length > 2 ? (
+        <View style={styles.getRecommendation}>
+          <Button title="TAVSİYE AL" onPress={onPress} />
+        </View>
+      ) : null}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   layout: {
@@ -88,5 +91,9 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     zIndex: 90
+  },
+  getRecommendation: {
+    textAlign: "center"
   }
 });
+export default ChooseFavorites;
