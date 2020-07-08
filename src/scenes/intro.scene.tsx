@@ -1,35 +1,34 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import Mascot from "../components/Mascot";
+import Button from "../components/Button";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
-import { Mascot } from "../components/mascot.component";
-import { Button } from "../components/button.component";
 
-export default function Intro({ navigation }: any) {
-
+const Intro = ({ navigation }: any) => {
   const onPress = () => {
-    navigation.navigate('ChooseAgeRange');
-  }
+    navigation.navigate("ChooseAgeRange");
+  };
 
   return (
     <View style={[LAYOUT, styles.layout]}>
       <Mascot width={100} />
       <Text style={styles.text}>Netflix Tavsiye Robotu</Text>
-      <Button title="Go on" onPress={onPress} />
+      <Button title="Başla" onPress={onPress} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   layout: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20
   },
   text: {
     fontSize: 44,
     color: COLORS.red,
     fontFamily: FONTS.bungee,
-    textAlign: 'center'
+    textAlign: "center"
   }
 });
+export default Intro;
