@@ -7,7 +7,7 @@ import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 const FilmDetail = ({ navigation, route }: any) => {
   const { filmId } = route.params;
   const catchFilm = FILMS.find(film => film.id === filmId);
-  console.log(catchFilm);
+  console.log("aaa", catchFilm);
   const onPress = () => {
     Linking.openURL("https://www.netflix.com/tr-en/title/" + filmId);
   };
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   moovieImage: {
-    width: 200,
+    width: "100%",
     height: 260,
     resizeMode: "cover",
     borderRadius: 6
@@ -76,11 +76,6 @@ const styles = StyleSheet.create({
   detailButton: {
     position: "absolute",
     bottom: 0
-  },
-  detailButtonText: {
-    textTransform: "uppercase",
-    textAlign: "center",
-    width: "100%"
   },
   detailHeaders: {
     alignItems: "flex-start",

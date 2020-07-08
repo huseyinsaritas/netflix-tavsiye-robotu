@@ -14,7 +14,7 @@ const ChooseFavorites = ({ navigation }: any) => {
     return (
       <TouchableOpacity style={[styles.film, selected ? styles.filmSelected : {}]} onPress={() => selectFilm(film.id)} activeOpacity={0.8}>
         {selected && <Image style={styles.filmSeletedIcon} source={require("../assets/selected.png")} />}
-        <Image style={styles.filmPoster} source={{ uri: "https://i.pinimg.com/736x/7c/0c/f2/7c0cf26a8a1e7b9fe8a1e393f28177f1.jpg" }} />
+        <Image style={styles.filmPoster} source={{ uri: film.image }} />
       </TouchableOpacity>
     );
   };
@@ -39,11 +39,7 @@ const ChooseFavorites = ({ navigation }: any) => {
       <Text style={styles.pageTitle}>Favori Seçin</Text>
       <Text style={styles.pageDesc}>Biraz yardımcı olmanız için en az {selectedFilms.length}/3 tane beğendiğiniz film veya diziyi işaretleyin.</Text>
       <FlatList data={FILMS} style={styles.films} numColumns={3} renderItem={({ item }) => <FilmItem film={item} />} keyExtractor={item => item.id} />
-      {selectedFilms.length > 2 ? (
-        <View style={styles.getRecommendation}>
-          <Button title="TAVSİYE AL" onPress={onPress} />
-        </View>
-      ) : null}
+      {selectedFilms.length > 2 ? <Button title="TAVSİYE AL" onPress={onPress} /> : null}
     </View>
   );
 };
@@ -79,10 +75,11 @@ const styles = StyleSheet.create({
     borderColor: COLORS.red
   },
   filmPoster: {
-    width: 100,
+    width: "100%",
     height: 160,
     resizeMode: "cover",
-    borderRadius: 6
+    borderRadius: 5,
+    overflow: "hidden"
   },
   filmSeletedIcon: {
     position: "absolute",
@@ -91,9 +88,6 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     zIndex: 90
-  },
-  getRecommendation: {
-    textAlign: "center"
   }
 });
 export default ChooseFavorites;

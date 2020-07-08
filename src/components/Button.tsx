@@ -16,12 +16,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.red,
     borderRadius: 6,
     paddingHorizontal: 20,
-    paddingVertical: 8
+    paddingVertical: 8,
+    margin: 3
   },
   text: {
     fontSize: 13,
     color: COLORS.white,
-    fontFamily: FONTS.bungee
+    fontFamily: FONTS.bungee,
+    textAlign: "center"
   }
 });
 

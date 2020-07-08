@@ -11,9 +11,10 @@ const Recommendation = ({ navigation }: any) => {
   };
 
   const RecommendedFilm = ({ filmId }: any) => {
+    var randomFilm = FILMS[Math.floor(Math.random() * FILMS.length)];
     return (
       <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(filmId)}>
-        <Image style={styles.recommendedFilmPoster} source={{ uri: "https://i.pinimg.com/736x/7c/0c/f2/7c0cf26a8a1e7b9fe8a1e393f28177f1.jpg" }} />
+        <Image style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }} />
       </TouchableOpacity>
     );
   };
@@ -21,7 +22,7 @@ const Recommendation = ({ navigation }: any) => {
   const FilmItem = ({ film }: any) => {
     return (
       <TouchableOpacity style={styles.film} onPress={() => recommedationClick(film.id)} activeOpacity={0.8}>
-        <Image style={styles.filmPoster} source={{ uri: "https://i.pinimg.com/736x/7c/0c/f2/7c0cf26a8a1e7b9fe8a1e393f28177f1.jpg" }} />
+        <Image style={styles.filmPoster} source={{ uri: film.image }} />
       </TouchableOpacity>
     );
   };
@@ -30,8 +31,10 @@ const Recommendation = ({ navigation }: any) => {
     <View style={[LAYOUT, styles.layout]}>
       <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
       <RecommendedFilm style={styles.recommendedMovie} filmId={81251947} />
-      <Text style={styles.similarMovies}>BENZERLERİ</Text>
-      <FlatList data={FILMS.slice(0, 3)} numColumns={3} renderItem={({ item }) => <FilmItem film={item} />} keyExtractor={item => item.id} />
+      <View style={styles.similarMoovies}>
+        <Text style={styles.similarMoviesText}>BENZERLERİ</Text>
+        <FlatList data={FILMS.slice(0, 3)} numColumns={3} renderItem={({ item }) => <FilmItem film={item} />} keyExtractor={item => item.id} />
+      </View>
     </View>
   );
 };
@@ -50,7 +53,10 @@ const styles = StyleSheet.create({
   recommendedMovie: {
     margin: 10
   },
-  similarMovies: {
+  similarMoovies: {
+    marginTop: 20
+  },
+  similarMoviesText: {
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
     marginTop: 20,
@@ -62,17 +68,18 @@ const styles = StyleSheet.create({
     flex: 1 / 3,
     borderWidth: 3,
     borderColor: "#eee",
-    borderRadius: 6,
+    borderRadius: 5,
     margin: 6
   },
   filmSelected: {
     borderColor: COLORS.red
   },
   filmPoster: {
-    width: 100,
+    width: "100%",
     height: 160,
     resizeMode: "cover",
-    borderRadius: 6
+    borderRadius: 6,
+    overflow: "hidden"
   },
   filmSeletedIcon: {
     position: "absolute",
