@@ -2,15 +2,10 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from "react-native";
 
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
-import { Button } from "../components/button.component";
-
+import Button from "../components/Button";
 import FILMS from "../data/films100.json";
 
-interface IRecommendation {
-  navigation: any;
-}
-
-const Recommendation: React.FC<IRecommendation> = ({ navigation }: any) => {
+const Recommendation = ({ navigation }: any) => {
   const recommedationClick = (filmId: string) => {
     navigation.navigate("FilmDetail", { filmId });
   };
