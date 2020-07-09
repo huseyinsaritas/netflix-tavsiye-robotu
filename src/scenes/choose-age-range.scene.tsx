@@ -35,10 +35,12 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20
+    // flexDirection: "row",
+    width: "100%",
+    // justifyContent: "center",
+    // alignItems: "center",
+    marginTop: 20,
+    flex: 0.5
   }
 });
 
