@@ -1,18 +1,17 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
-import { Button } from "../components/button.component";
+import Button from "../components/Button";
 
-export default function ChooseAgeRange({ navigation }: any) {
-
+const ChooseAgeRange = ({ navigation }: any) => {
   const onPress = (ageRange: number) => {
-    navigation.navigate('ChooseFavorites')
-  }
+    navigation.navigate("ChooseFavorites");
+  };
 
   return (
     <View style={[LAYOUT, styles.layout]}>
-      <Text style={{ color: '#fff' }}>Netflix Tavsiye Robotu</Text>
+      <Text style={styles.ageRangeTitle}>Kaç yaşındasınız?</Text>
       <View style={styles.buttonsContainer}>
         <Button title="13-18" onPress={() => onPress(0)} />
         <Button title="18-25" onPress={() => onPress(1)} />
@@ -21,17 +20,26 @@ export default function ChooseAgeRange({ navigation }: any) {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   layout: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20
   },
+  ageRangeTitle: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin700,
+    fontSize: 32,
+    textAlign: "center"
+  },
   buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20
   }
 });
+
+export default ChooseAgeRange;
