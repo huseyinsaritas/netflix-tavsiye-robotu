@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, ImageBackground } from "react-native";
 
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 import Button from "../components/Button";
@@ -14,7 +14,9 @@ const Recommendation = ({ navigation }: any) => {
     var randomFilm = FILMS[Math.floor(Math.random() * FILMS.length)];
     return (
       <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(filmId)}>
-        <Image style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }} />
+        <ImageBackground style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }}>
+          <Text style={styles.filmTitle}>{randomFilm.title}</Text>
+        </ImageBackground>
       </TouchableOpacity>
     );
   };
@@ -22,7 +24,9 @@ const Recommendation = ({ navigation }: any) => {
   const FilmItem = ({ film }: any) => {
     return (
       <TouchableOpacity style={styles.film} onPress={() => recommedationClick(film.id)} activeOpacity={0.8}>
-        <Image style={styles.filmPoster} source={{ uri: film.image }} />
+        <ImageBackground style={styles.filmPoster} source={{ uri: film.image }}>
+          <Text style={styles.filmTitle}>{film.title}</Text>
+        </ImageBackground>
       </TouchableOpacity>
     );
   };
@@ -54,12 +58,12 @@ const styles = StyleSheet.create({
     margin: 10
   },
   similarMoovies: {
-    marginTop: 20
+    marginTop: 10
   },
   similarMoviesText: {
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
-    marginTop: 20,
+    textAlign: "center",
     marginLeft: 6,
     marginBottom: 6
   },
@@ -70,6 +74,17 @@ const styles = StyleSheet.create({
     borderColor: "#eee",
     borderRadius: 5,
     margin: 6
+  },
+  filmTitle: {
+    fontWeight: "bold",
+    color: "white",
+    position: "absolute",
+    bottom: 0,
+    left: 2,
+    fontSize: 12,
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10
   },
   filmSelected: {
     borderColor: COLORS.red
@@ -91,13 +106,14 @@ const styles = StyleSheet.create({
   },
   recommendedFilm: {
     borderRadius: 6,
-    margin: 6,
+    marginTop: 20,
+    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center"
   },
   recommendedFilmPoster: {
-    borderColor: "#eee",
-    borderWidth: 2,
+    borderColor: COLORS.red,
+    borderWidth: 6,
     width: 200,
     height: 260,
     resizeMode: "cover",
