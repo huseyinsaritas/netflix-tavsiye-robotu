@@ -16,12 +16,13 @@ const FilmDetail = ({ navigation, route }: any) => {
       <View style={styles.moovie}>
         <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: FILMS[0].image }} />
       </View>
+      <Text style={styles.moovieTitle}>{FILMS[0].title}</Text>
       <View style={styles.detailContent}>
         <Text style={styles.info}>{FILMS[0].year}</Text>
         <Text style={styles.info}>{FILMS[0].maturity}</Text>
         <Text style={styles.info}>{FILMS[0].duration}</Text>
       </View>
-      <Text style={styles.info}>{FILMS[0].synopsis}</Text>
+      <Text style={styles.moovieDescription}>{FILMS[0].synopsis}</Text>
       <View style={styles.detailHeaders}>
         <Text style={styles.headerInfo}>Kategoriler: {FILMS[0].genres.join(", ")}</Text>
         <Text style={styles.headerInfo}>Başroldekiler: {FILMS[0].starring.join(", ")}</Text>
@@ -38,12 +39,6 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 80
   },
-  pageTitle: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin700,
-    fontSize: 32,
-    textAlign: "center"
-  },
   moovie: {
     borderRadius: 6,
     margin: 6,
@@ -59,18 +54,31 @@ const styles = StyleSheet.create({
   info: {
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
-    marginTop: 20,
-    marginLeft: 6,
-    marginBottom: 6
+    marginTop: 6,
+    marginBottom: 6,
+    marginRight: 6,
+    borderWidth: 3
+  },
+  moovieDescription: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    margin: 6
   },
   headerInfo: {
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
     margin: 6
   },
+  moovieTitle: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    fontSize: 32,
+    margin: 6
+  },
   detailContent: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
+    margin: 6,
     alignItems: "center"
   },
   detailButton: {
