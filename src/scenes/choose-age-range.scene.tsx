@@ -6,7 +6,7 @@ import Button from "../components/Button";
 
 const ChooseAgeRange = ({ navigation }: any) => {
   const onPress = (ageRange: number) => {
-    navigation.navigate("ChooseFavorites");
+    navigation.navigate("ChooseCategory");
   };
 
   return (
