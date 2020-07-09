@@ -25,17 +25,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignItems: "center",
     color: COLORS.white,
-    backgroundColor: COLORS.white,
+    backgroundColor: "#333",
     fontFamily: FONTS.cabin400,
     lineHeight: 32,
     borderRadius: 6,
     height: 32,
     width: "100%",
     overflow: "hidden",
-    marginTop: 10
+    marginTop: 10,
+    textShadowColor: COLORS.white
   },
   searchText: {
-    color: COLORS.black,
+    color: COLORS.white,
     width: " 100%",
     height: 32,
     margin: 0,
