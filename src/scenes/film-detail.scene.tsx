@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, Linking } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Button from "../components/Button";
 import FILMS from "../data/films100.json";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
@@ -14,22 +15,30 @@ const FilmDetail = ({ route }: any) => {
   };
   return (
     <View style={[LAYOUT, styles.layout]}>
-      <View style={styles.moovie}>
-        <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: catchFilm?.image }} />
-      </View>
-      <Text style={styles.moovieTitle}>{catchFilm?.title}</Text>
-      <View style={styles.detailContent}>
-        <Text style={[styles.info, styles.filmInfo]}>{catchFilm?.year}</Text>
-        <View style={styles.info}>
-          <Text style={styles.maturity}>{catchFilm?.maturity}</Text>
+      <ScrollView>
+        <View style={styles.moovie}>
+          <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: catchFilm?.image }} />
         </View>
-        <Text style={[styles.info, styles.filmInfo]}>{catchFilm?.duration}</Text>
-      </View>
-      <Text style={styles.moovieDescription}>{catchFilm?.synopsis}</Text>
-      <View style={styles.detailHeaders}>
-        <Text style={styles.headerInfo}>Kategoriler: {catchFilm?.genres.join(", ")}</Text>
-        <Text style={styles.headerInfo}>Başroldekiler: {catchFilm?.starring.join(", ")}</Text>
-      </View>
+        <Text style={styles.moovieTitle}>{catchFilm?.title}</Text>
+        <View style={styles.detailContent}>
+          <Text style={[styles.info, styles.filmInfo]}>{catchFilm?.year}</Text>
+          <View style={styles.info}>
+            <Text style={styles.maturity}>{catchFilm?.maturity}</Text>
+          </View>
+          <Text style={[styles.info, styles.filmInfo]}>{catchFilm?.duration}</Text>
+        </View>
+        <Text style={styles.moovieDescription}>{catchFilm?.synopsis}</Text>
+        <View style={styles.detailHeaders}>
+          <View style={styles.sortInfoPosition}>
+            <Text style={styles.sortInfoHeader}>Kategoriler:</Text>
+            <Text style={styles.sortInfo}>{catchFilm?.genres.join(", ")}</Text>
+          </View>
+          <View style={styles.sortInfoPosition}>
+            <Text style={styles.sortInfoHeader}>Oyuncular:</Text>
+            <Text style={styles.sortInfo}>{catchFilm?.starring.join(", ")}</Text>
+          </View>
+        </View>
+      </ScrollView>
       <View style={styles.watchNetflix}>
         <Button title="NETFLIX'TE IZLE" style={styles.detailButton} onPress={onPress} />
       </View>
@@ -79,9 +88,20 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.cabin400,
     margin: 6
   },
-  headerInfo: {
+  sortInfoPosition: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  sortInfoHeader: {
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
+    margin: 6,
+    fontSize: 16
+  },
+  sortInfo: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    fontSize: 14,
     margin: 6
   },
   moovieTitle: {
@@ -107,7 +127,7 @@ const styles = StyleSheet.create({
   watchNetflix: {
     textAlign: "center",
     position: "absolute",
-    bottom: 10,
+    bottom: 0,
     left: 1,
     right: 1
   }
