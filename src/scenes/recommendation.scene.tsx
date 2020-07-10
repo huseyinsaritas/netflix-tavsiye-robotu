@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, ImageBackground } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 import Button from "../components/Button";
@@ -17,9 +17,7 @@ const Recommendation = ({ navigation }: any) => {
     return (
       <>
         <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(randomFilm.id, undefined)}>
-          <ImageBackground style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }}>
-            <Text style={styles.recommendedFilmTitle}>{randomFilm.title}</Text>
-          </ImageBackground>
+          <Image style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }} />
         </TouchableOpacity>
         <Text style={styles.recommendedFilmHeader}>{randomFilm.title}</Text>
         <View style={styles.recommendedFilmContent}>
@@ -68,17 +66,6 @@ const styles = StyleSheet.create({
   },
   recommendedMovie: {
     margin: 10
-  },
-  recommendedFilmTitle: {
-    fontWeight: "bold",
-    color: "white",
-    position: "absolute",
-    bottom: 0,
-    left: 2,
-    fontSize: 12,
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10
   },
   recommendedFilm: {
     alignItems: "center",
