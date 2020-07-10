@@ -1,31 +1,32 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, Linking } from "react-native";
+import { StyleSheet, Text, View, Image, Linking } from "react-native";
 import Button from "../components/Button";
 import FILMS from "../data/films100.json";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
-const FilmDetail = ({ navigation, route }: any) => {
+const FilmDetail = ({ route }: any) => {
   const { filmId } = route.params;
   const catchFilm = FILMS.find(film => film.id === filmId);
   console.log("aaa", catchFilm);
+  console.log(route.params);
   const onPress = () => {
     Linking.openURL("https://www.netflix.com/tr-en/title/" + filmId);
   };
   return (
     <View style={[LAYOUT, styles.layout]}>
       <View style={styles.moovie}>
-        <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: FILMS[0].image }} />
+        <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: catchFilm?.image }} />
       </View>
-      <Text style={styles.moovieTitle}>{FILMS[0].title}</Text>
+      <Text style={styles.moovieTitle}>{catchFilm?.title}</Text>
       <View style={styles.detailContent}>
-        <Text style={styles.info}>{FILMS[0].year}</Text>
-        <Text style={styles.info}>{FILMS[0].maturity}</Text>
-        <Text style={styles.info}>{FILMS[0].duration}</Text>
+        <Text style={styles.info}>{catchFilm?.year}</Text>
+        <Text style={styles.info}>{catchFilm?.maturity}</Text>
+        <Text style={styles.info}>{catchFilm?.duration}</Text>
       </View>
-      <Text style={styles.moovieDescription}>{FILMS[0].synopsis}</Text>
+      <Text style={styles.moovieDescription}>{catchFilm?.synopsis}</Text>
       <View style={styles.detailHeaders}>
-        <Text style={styles.headerInfo}>Kategoriler: {FILMS[0].genres.join(", ")}</Text>
-        <Text style={styles.headerInfo}>Başroldekiler: {FILMS[0].starring.join(", ")}</Text>
+        <Text style={styles.headerInfo}>Kategoriler: {catchFilm?.genres.join(", ")}</Text>
+        <Text style={styles.headerInfo}>Başroldekiler: {catchFilm?.starring.join(", ")}</Text>
       </View>
       <View style={styles.watchNetflix}>
         <Button title="NETFLIX'TE IZLE" style={styles.detailButton} onPress={onPress} />
