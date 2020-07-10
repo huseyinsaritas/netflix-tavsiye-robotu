@@ -12,7 +12,7 @@ interface ISearchBar {
 const SearchBar: React.FC<ISearchBar> = ({ value, onChangeText, placeholder }: any) => {
   return (
     <View style={styles.searchBar}>
-      <TextInput style={styles.searchText} onChangeText={onChangeText} placeholder={placeholder} />
+      <TextInput style={styles.searchText} onChangeText={onChangeText} placeholder={placeholder} value={value} />
     </View>
   );
 };
@@ -20,28 +20,23 @@ const SearchBar: React.FC<ISearchBar> = ({ value, onChangeText, placeholder }: a
 const styles = StyleSheet.create({
   searchBar: {
     position: "relative",
-    cursor: "text",
     display: "flex",
-    fontSize: 16,
     alignItems: "center",
-    color: COLORS.white,
     backgroundColor: "#333",
-    fontFamily: FONTS.cabin400,
-    lineHeight: 32,
     borderRadius: 6,
     height: 32,
     width: "100%",
     overflow: "hidden",
-    marginTop: 10,
-    textShadowColor: COLORS.white
+    marginTop: 10
   },
   searchText: {
+    fontFamily: FONTS.cabin400,
     color: COLORS.white,
     width: " 100%",
-    height: 32,
     margin: 0,
     minWidth: 0,
-    padding: 8
+    padding: 8,
+    alignItems: "center"
   }
 });
 
