@@ -19,9 +19,11 @@ const FilmDetail = ({ route }: any) => {
       </View>
       <Text style={styles.moovieTitle}>{catchFilm?.title}</Text>
       <View style={styles.detailContent}>
-        <Text style={styles.info}>{catchFilm?.year}</Text>
-        <Text style={styles.info}>{catchFilm?.maturity}</Text>
-        <Text style={styles.info}>{catchFilm?.duration}</Text>
+        <Text style={[styles.info, styles.filmInfo]}>{catchFilm?.year}</Text>
+        <View style={styles.info}>
+          <Text style={styles.maturity}>{catchFilm?.maturity}</Text>
+        </View>
+        <Text style={[styles.info, styles.filmInfo]}>{catchFilm?.duration}</Text>
       </View>
       <Text style={styles.moovieDescription}>{catchFilm?.synopsis}</Text>
       <View style={styles.detailHeaders}>
@@ -53,12 +55,24 @@ const styles = StyleSheet.create({
     borderRadius: 6
   },
   info: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
     marginTop: 6,
     marginBottom: 6,
-    marginRight: 6,
-    borderWidth: 3
+    borderColor: COLORS.white,
+    borderRightWidth: 1,
+    marginRight: 9,
+    paddingRight: 11
+  },
+  filmInfo: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400
+  },
+  maturity: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    paddingRight: 5,
+    paddingLeft: 5,
+    borderWidth: 1,
+    borderColor: COLORS.white
   },
   moovieDescription: {
     color: COLORS.white,
