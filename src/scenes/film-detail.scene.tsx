@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
   },
   sortInfoPosition: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    flex: 1
   },
   sortInfoHeader: {
     color: COLORS.white,
@@ -102,7 +103,8 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
     fontSize: 14,
-    margin: 6
+    margin: 6,
+    flex: 1
   },
   moovieTitle: {
     color: COLORS.white,
