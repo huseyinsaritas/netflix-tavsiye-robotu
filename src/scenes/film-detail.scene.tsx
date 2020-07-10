@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   moovieImage: {
     width: "100%",
     height: 260,
-    resizeMode: "cover",
+    // resizeMode: "cover",
     borderRadius: 6
   },
   info: {

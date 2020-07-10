@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   filmPoster: {
     width: "100%",
     height: 160,
-    resizeMode: "cover",
+    // resizeMode: "cover",
     borderRadius: 5,
     overflow: "hidden",
     position: "relative"

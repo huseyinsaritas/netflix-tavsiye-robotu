@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   filmPoster: {
     width: "100%",
     height: 160,
-    resizeMode: "cover",
+    // resizeMode: "cover",
     borderRadius: 6,
     overflow: "hidden"
   },
@@ -105,19 +105,19 @@ const styles = StyleSheet.create({
     zIndex: 90
   },
   recommendedFilm: {
-    borderRadius: 6,
-    marginTop: 20,
-    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center"
   },
   recommendedFilmPoster: {
     borderColor: COLORS.red,
-    borderWidth: 6,
-    width: 200,
-    height: 260,
-    resizeMode: "cover",
-    borderRadius: 6
+    borderWidth: 3,
+    borderRadius: 3,
+    marginTop: 20,
+    marginBottom: 20,
+    overflow: "hidden",
+    width: 180,
+    height: 260
+    // resizeMode: "cover",
   }
 });
 
