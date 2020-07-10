@@ -8,24 +8,26 @@ import ThumbsUp from "../components/ThumbsUp";
 import ThumbsDown from "../components/ThumbsDown";
 
 const Recommendation = ({ navigation }: any) => {
-  const recommedationClick = (filmId: string) => {
-    navigation.navigate("FilmDetail", { filmId });
+  const recommedationClick = (filmId?: string, thumbs?: boolean) => {
+    navigation.navigate("FilmDetail", { filmId, thumbs });
   };
 
   let randomFilm = FILMS[Math.floor(Math.random() * FILMS.length)];
   const RecommendedFilm = () => {
     return (
       <>
-        <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(randomFilm.id)}>
+        <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(randomFilm.id, undefined)}>
           <ImageBackground style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }}>
             <Text style={styles.recommendedFilmTitle}>{randomFilm.title}</Text>
           </ImageBackground>
         </TouchableOpacity>
         <Text style={styles.recommendedFilmHeader}>{randomFilm.title}</Text>
         <View style={styles.recommendedFilmContent}>
-          <Text style={styles.recommendedFilmInfo}>{randomFilm.year}</Text>
-          <Text style={styles.recommendedFilmInfo}>{randomFilm.maturity}</Text>
-          <Text style={styles.recommendedFilmInfo}>{randomFilm.duration}</Text>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{randomFilm.year}</Text>
+          <View style={styles.recommendedInfo}>
+            <Text style={styles.recommendedFilmMaturity}>{randomFilm.maturity}</Text>
+          </View>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{randomFilm.duration}</Text>
         </View>
       </>
     );
@@ -37,12 +39,17 @@ const Recommendation = ({ navigation }: any) => {
       <RecommendedFilm />
       <View style={styles.thumbs}>
         <ThumbsUp
-          width="32px"
+          width="48px"
           onPress={() => {
-            recommedationClick(randomFilm.id);
+            recommedationClick(randomFilm.id, true);
           }}
         />
-        <ThumbsDown width="32px" onPress={() => {}} />
+        <ThumbsDown
+          width="48px"
+          onPress={() => {
+            recommedationClick(undefined, false);
+          }}
+        />
       </View>
     </View>
   );
@@ -103,17 +110,29 @@ const styles = StyleSheet.create({
   },
   recommendedFilmInfo: {
     color: COLORS.white,
-    fontFamily: FONTS.cabin400,
+    fontFamily: FONTS.cabin400
+  },
+  recommendedInfo: {
     marginTop: 6,
     marginBottom: 6,
-    marginRight: 6,
-    borderWidth: 3
+    borderColor: COLORS.white,
+    borderRightWidth: 1,
+    marginRight: 9,
+    paddingRight: 11
+  },
+  recommendedFilmMaturity: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    paddingRight: 5,
+    paddingLeft: 5,
+    borderWidth: 1,
+    borderColor: COLORS.white
   },
   thumbs: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    marginTop: 20
+    marginTop: 30
   }
 });
 
