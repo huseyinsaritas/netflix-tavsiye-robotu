@@ -4,40 +4,45 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList, ImageBackground } f
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 import Button from "../components/Button";
 import FILMS from "../data/films100.json";
+import ThumbsUp from "../components/ThumbsUp";
+import ThumbsDown from "../components/ThumbsDown";
 
 const Recommendation = ({ navigation }: any) => {
   const recommedationClick = (filmId: string) => {
     navigation.navigate("FilmDetail", { filmId });
   };
 
-  const RecommendedFilm = ({ filmId }: any) => {
-    var randomFilm = FILMS[Math.floor(Math.random() * FILMS.length)];
+  let randomFilm = FILMS[Math.floor(Math.random() * FILMS.length)];
+  const RecommendedFilm = () => {
     return (
-      <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(filmId)}>
-        <ImageBackground style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }}>
-          <Text style={styles.filmTitle}>{randomFilm.title}</Text>
-        </ImageBackground>
-      </TouchableOpacity>
-    );
-  };
-
-  const FilmItem = ({ film }: any) => {
-    return (
-      <TouchableOpacity style={styles.film} onPress={() => recommedationClick(film.id)} activeOpacity={0.8}>
-        <ImageBackground style={styles.filmPoster} source={{ uri: film.image }}>
-          <Text style={styles.filmTitle}>{film.title}</Text>
-        </ImageBackground>
-      </TouchableOpacity>
+      <>
+        <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(randomFilm.id)}>
+          <ImageBackground style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }}>
+            <Text style={styles.recommendedFilmTitle}>{randomFilm.title}</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+        <Text style={styles.recommendedFilmHeader}>{randomFilm.title}</Text>
+        <View style={styles.recommendedFilmContent}>
+          <Text style={styles.recommendedFilmInfo}>{randomFilm.year}</Text>
+          <Text style={styles.recommendedFilmInfo}>{randomFilm.maturity}</Text>
+          <Text style={styles.recommendedFilmInfo}>{randomFilm.duration}</Text>
+        </View>
+      </>
     );
   };
 
   return (
     <View style={[LAYOUT, styles.layout]}>
       <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
-      <RecommendedFilm style={styles.recommendedMovie} filmId={81251947} />
-      <View style={styles.similarMoovies}>
-        <Text style={styles.similarMoviesText}>BENZERLERİ</Text>
-        <FlatList data={FILMS.slice(0, 3)} numColumns={3} renderItem={({ item }) => <FilmItem film={item} />} keyExtractor={item => item.id} />
+      <RecommendedFilm />
+      <View style={styles.thumbs}>
+        <ThumbsUp
+          width="32px"
+          onPress={() => {
+            recommedationClick(randomFilm.id);
+          }}
+        />
+        <ThumbsDown width="32px" onPress={() => {}} />
       </View>
     </View>
   );
@@ -57,25 +62,7 @@ const styles = StyleSheet.create({
   recommendedMovie: {
     margin: 10
   },
-  similarMoovies: {
-    marginTop: 10
-  },
-  similarMoviesText: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
-    textAlign: "center",
-    marginLeft: 6,
-    marginBottom: 6
-  },
-  film: {
-    position: "relative",
-    flex: 1 / 3,
-    borderWidth: 3,
-    borderColor: "#eee",
-    borderRadius: 5,
-    margin: 6
-  },
-  filmTitle: {
+  recommendedFilmTitle: {
     fontWeight: "bold",
     color: "white",
     position: "absolute",
@@ -85,24 +72,6 @@ const styles = StyleSheet.create({
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10
-  },
-  filmSelected: {
-    borderColor: COLORS.red
-  },
-  filmPoster: {
-    width: "100%",
-    height: 160,
-    // resizeMode: "cover",
-    borderRadius: 6,
-    overflow: "hidden"
-  },
-  filmSeletedIcon: {
-    position: "absolute",
-    top: -8,
-    right: -8,
-    width: 24,
-    height: 24,
-    zIndex: 90
   },
   recommendedFilm: {
     alignItems: "center",
@@ -118,6 +87,33 @@ const styles = StyleSheet.create({
     width: 180,
     height: 260
     // resizeMode: "cover",
+  },
+  recommendedFilmHeader: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    fontSize: 32,
+    margin: 6,
+    textAlign: "center"
+  },
+  recommendedFilmContent: {
+    flexDirection: "row",
+    justifyContent: "center",
+    margin: 6,
+    alignItems: "center"
+  },
+  recommendedFilmInfo: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    marginTop: 6,
+    marginBottom: 6,
+    marginRight: 6,
+    borderWidth: 3
+  },
+  thumbs: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    marginTop: 20
   }
 });
 
