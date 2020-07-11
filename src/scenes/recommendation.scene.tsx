@@ -23,7 +23,7 @@ const Recommendation = ({ navigation }: any) => {
         <View style={styles.recommendedFilmContent}>
           <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{randomFilm.year}</Text>
           <View style={styles.recommendedInfo}>
-            <Text style={styles.recommendedFilmMaturity}>{randomFilm.maturity}</Text>
+            <Text style={styles.recommendedFilmMaturity}>{randomFilm.maturity.trim()}</Text>
           </View>
           <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{randomFilm.duration}</Text>
         </View>
@@ -36,16 +36,16 @@ const Recommendation = ({ navigation }: any) => {
       <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
       <RecommendedFilm />
       <View style={styles.thumbs}>
-        <ThumbsUp
-          width="48px"
-          onPress={() => {
-            recommedationClick(randomFilm.id, true);
-          }}
-        />
         <ThumbsDown
-          width="48px"
+          width="88px"
           onPress={() => {
             recommedationClick(undefined, false);
+          }}
+        />
+        <ThumbsUp
+          width="88px"
+          onPress={() => {
+            recommedationClick(randomFilm.id, true);
           }}
         />
       </View>
@@ -72,15 +72,12 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   recommendedFilmPoster: {
-    borderColor: COLORS.red,
-    borderWidth: 3,
-    borderRadius: 3,
+    borderRadius: 6,
     marginTop: 20,
     marginBottom: 20,
     overflow: "hidden",
-    width: 180,
-    height: 260
-    // resizeMode: "cover",
+    width: 200,
+    height: 300,
   },
   recommendedFilmHeader: {
     color: COLORS.white,
@@ -113,7 +110,6 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     paddingLeft: 5,
     borderWidth: 1,
-    borderColor: COLORS.white
   },
   thumbs: {
     flexDirection: "row",

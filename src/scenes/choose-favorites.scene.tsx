@@ -51,7 +51,7 @@ const ChooseFavorites = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   layout: {
     padding: 20,
-    paddingTop: 80
+    paddingTop: 60
   },
   pageTitle: {
     color: COLORS.white,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     position: "relative",
     flex: 1 / 3,
     borderWidth: 3,
-    borderColor: "#eee",
+    borderColor: "#444",
     borderRadius: 6,
     margin: 6
   },
@@ -87,13 +87,14 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   filmTitle: {
-    fontWeight: "bold",
-    color: "white",
+    color: '#fff',
     position: "absolute",
     bottom: 0,
-    left: 2,
-    fontSize: 12,
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    left: 0,
+    paddingLeft: 4,
+    fontFamily: FONTS.cabin700,
+    fontSize: 14,
+    textShadowColor: "rgba(0, 0, 0, 0.8)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10
   },

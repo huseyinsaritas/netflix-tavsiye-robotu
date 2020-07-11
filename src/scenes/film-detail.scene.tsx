@@ -40,7 +40,7 @@ const FilmDetail = ({ route }: any) => {
         </View>
       </ScrollView>
       <View style={styles.watchNetflix}>
-        <Button title="NETFLIX'TE IZLE" style={styles.detailButton} onPress={onPress} />
+        <Button title="NETFLIX'TE İZLE" style={styles.detailButton} onPress={onPress} />
       </View>
     </View>
   );

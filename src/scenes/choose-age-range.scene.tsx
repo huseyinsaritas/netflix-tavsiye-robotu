@@ -11,7 +11,7 @@ const ChooseAgeRange = ({ navigation }: any) => {
 
   return (
     <View style={[LAYOUT, styles.layout]}>
-      <Text style={styles.ageRangeTitle}>Kaç yaşındasınız?</Text>
+      <Text style={styles.ageRangeTitle}>Yaş aralığınız?</Text>
       <View style={styles.buttonsContainer}>
         <Button title="13-18" onPress={() => onPress(0)} />
         <Button title="18-25" onPress={() => onPress(1)} />
@@ -32,15 +32,11 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: FONTS.cabin700,
     fontSize: 32,
-    textAlign: "center"
+    textAlign: "center",
+    marginBottom: 20
   },
   buttonsContainer: {
-    // flexDirection: "row",
     width: "100%",
-    // justifyContent: "center",
-    // alignItems: "center",
-    marginTop: 20,
-    flex: 0.5
   }
 });
 

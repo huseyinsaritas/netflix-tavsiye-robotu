@@ -5,18 +5,19 @@ import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 import Button from "../components/Button";
 
 const ChooseCategory = ({ navigation }: any) => {
+  
   const onPress = (category: string) => {
     navigation.navigate("ChooseFavorites");
   };
 
   return (
     <View style={[LAYOUT, styles.layout]}>
-      <Text style={styles.categoryTitle}>Kategori seçin</Text>
+      <Text style={styles.categoryTitle}>Hangi tarz içerik istiyorsunuz?</Text>
       <View style={styles.buttonsContainer}>
-        <Button title="Film" onPress={() => onPress("Moovie")} />
-        <Button title="Dizi" onPress={() => onPress("Serie")} />
-        <Button title="Belgesel" onPress={() => onPress("Documentary")} />
-        <Button title="Hepsi" onPress={() => onPress("All")} />
+        <Button title="FİLM" onPress={() => onPress("Moovie")} />
+        <Button title="DİZİ" onPress={() => onPress("Serie")} />
+        <Button title="BELGESEL" onPress={() => onPress("Documentary")} />
+        <Button title="TÜMÜ" onPress={() => onPress("All")} />
       </View>
     </View>
   );
@@ -32,15 +33,11 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: FONTS.cabin700,
     fontSize: 32,
-    textAlign: "center"
+    textAlign: "center",
+    marginBottom: 20
   },
   buttonsContainer: {
-    // flexDirection: "row",
     width: "100%",
-    // justifyContent: "center",
-    // alignItems: "center",
-    marginTop: 20,
-    flex: 0.5
   }
 });
 

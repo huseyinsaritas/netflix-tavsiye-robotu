@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
 import { COLORS, FONTS } from "../styles/styles";
@@ -23,20 +23,21 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     backgroundColor: "#333",
+    borderColor: '#555',
+    borderWidth: 1,
     borderRadius: 6,
-    height: 32,
+    height: 36,
     width: "100%",
     overflow: "hidden",
     marginTop: 10
   },
   searchText: {
+    width: "100%",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     fontFamily: FONTS.cabin400,
     color: COLORS.white,
-    width: " 100%",
-    margin: 0,
-    minWidth: 0,
-    padding: 8,
-    alignItems: "center"
+    letterSpacing: 1
   }
 });
 
