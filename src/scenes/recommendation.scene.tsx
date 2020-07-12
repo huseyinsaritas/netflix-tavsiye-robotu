@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-
-import { COLORS, FONTS, LAYOUT } from "../styles/styles";
-import Button from "../components/Button";
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Dimensions } from "react-native";
 import FILMS from "../data/films100.json";
 import ThumbsUp from "../components/ThumbsUp";
 import ThumbsDown from "../components/ThumbsDown";
+import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
 const Recommendation = ({ navigation }: any) => {
   const recommedationClick = (filmId?: string, thumbs?: boolean) => {
@@ -13,13 +11,14 @@ const Recommendation = ({ navigation }: any) => {
   };
 
   let randomFilm = FILMS[Math.floor(Math.random() * FILMS.length)];
+
   const RecommendedFilm = () => {
     return (
       <>
+        <Text style={styles.recommendedFilmHeader}>{randomFilm.title}</Text>
         <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(randomFilm.id, undefined)}>
           <Image style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }} />
         </TouchableOpacity>
-        <Text style={styles.recommendedFilmHeader}>{randomFilm.title}</Text>
         <View style={styles.recommendedFilmContent}>
           <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{randomFilm.year}</Text>
           <View style={styles.recommendedInfo}>
@@ -33,13 +32,13 @@ const Recommendation = ({ navigation }: any) => {
 
   return (
     <View style={[LAYOUT, styles.layout]}>
-      <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
+      {/* <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text> */}
       <RecommendedFilm />
       <View style={styles.thumbs}>
         <ThumbsDown
           width="88px"
           onPress={() => {
-            recommedationClick(undefined, false);
+            // recommedationClick(undefined, false);
           }}
         />
         <ThumbsUp
@@ -56,7 +55,8 @@ const Recommendation = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   layout: {
     padding: 20,
-    paddingTop: 80
+    paddingTop: 80,
+    height: Dimensions.get("screen").height
   },
   pageTitle: {
     color: COLORS.white,
@@ -77,19 +77,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     overflow: "hidden",
     width: 200,
-    height: 300,
+    height: 300
   },
   recommendedFilmHeader: {
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
     fontSize: 32,
-    margin: 6,
+    margin: 26,
     textAlign: "center"
   },
   recommendedFilmContent: {
     flexDirection: "row",
     justifyContent: "center",
-    margin: 6,
+    margin: 0,
     alignItems: "center"
   },
   recommendedFilmInfo: {
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.cabin400
   },
   recommendedInfo: {
-    marginTop: 6,
+    marginTop: 10,
     marginBottom: 6,
     borderColor: COLORS.white,
     borderRightWidth: 1,
@@ -109,13 +109,13 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.cabin400,
     paddingRight: 5,
     paddingLeft: 5,
-    borderWidth: 1,
+    borderWidth: 1
   },
   thumbs: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    marginTop: 30
+    marginTop: 80
   }
 });
 
