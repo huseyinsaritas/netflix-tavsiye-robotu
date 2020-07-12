@@ -15,10 +15,10 @@ const Recommendation = ({ navigation }: any) => {
   const RecommendedFilm = () => {
     return (
       <>
-        <Text style={styles.recommendedFilmHeader}>{randomFilm.title}</Text>
         <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(randomFilm.id, undefined)}>
           <Image style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }} />
         </TouchableOpacity>
+        <Text style={styles.recommendedFilmHeader}>{randomFilm.title}</Text>
         <View style={styles.recommendedFilmContent}>
           <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{randomFilm.year}</Text>
           <View style={styles.recommendedInfo}>
@@ -32,7 +32,7 @@ const Recommendation = ({ navigation }: any) => {
 
   return (
     <View style={[LAYOUT, styles.layout]}>
-      {/* <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text> */}
+      <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
       <RecommendedFilm />
       <View style={styles.thumbs}>
         <ThumbsDown
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
     fontSize: 32,
-    margin: 26,
+    margin: 6,
     textAlign: "center"
   },
   recommendedFilmContent: {
