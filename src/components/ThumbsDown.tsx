@@ -77,7 +77,8 @@ const ThumbsDown: React.FC<IThumbsDown> = ({ width, onPress }) => {
 
 const styles = StyleSheet.create({
   thumbsDown: {
-    position: "relative"
+    position: "relative",
+    top: -12
     // borderRadius: 30 / PixelRatio.get()
     // backgroundColor: COLORS.white,
     // justifyContent: "center",
