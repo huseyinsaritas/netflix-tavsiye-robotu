@@ -6,7 +6,7 @@ import Button from "../components/Button";
 
 const ChooseAgeRange = ({ navigation }: any) => {
   const onPress = (ageRange: number) => {
-    navigation.navigate("ChooseCategory");
+    navigation.navigate("ChooseCategory", { ageRange });
   };
 
   return (
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   buttonsContainer: {
-    width: "100%",
+    width: "100%"
   }
 });
 

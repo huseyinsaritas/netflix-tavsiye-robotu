@@ -4,10 +4,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 import Button from "../components/Button";
 
-const ChooseCategory = ({ navigation }: any) => {
-  
+const ChooseCategory = ({ navigation, route }: any) => {
+  const { ageRange } = route.params;
   const onPress = (category: string) => {
-    navigation.navigate("ChooseFavorites");
+    navigation.navigate("ChooseFavorites", { category, ageRange });
   };
 
   return (
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   buttonsContainer: {
-    width: "100%",
+    width: "100%"
   }
 });
 

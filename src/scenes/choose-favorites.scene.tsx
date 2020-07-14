@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import SearchBar from "../components/SearchBar";
 import FILMS from "../data/films100.json";
 
-const ChooseFavorites = ({ navigation }: any) => {
+const ChooseFavorites = ({ navigation, route }: any) => {
   const [selectedFilms, setSelectedFilms] = useState([] as string[]);
   const [search, setSearch] = useState<string>("");
 
@@ -32,7 +32,7 @@ const ChooseFavorites = ({ navigation }: any) => {
     }
     setSelectedFilms(_selectedFilms);
   };
-
+  const { ageRange, category } = route.params;
   const onPress = () => {
     navigation.navigate("Recommendation");
   };
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   filmTitle: {
-    color: '#fff',
+    color: "#fff",
     position: "absolute",
     bottom: 0,
     left: 0,

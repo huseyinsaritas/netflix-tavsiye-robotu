@@ -1,30 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Dimensions } from "react-native";
 import FILMS from "../data/films100.json";
 import ThumbsUp from "../components/ThumbsUp";
 import ThumbsDown from "../components/ThumbsDown";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
+const axios = require("axios");
+
+interface IMoovie {
+  id: string;
+  title: string;
+  type: string;
+  duration: string;
+  genres: Array<string>;
+  image: string;
+  maturity: string;
+  moods: Array<string>;
+  starring: Array<string>;
+  synopsis: string;
+  year: string;
+}
+
 const Recommendation = ({ navigation }: any) => {
+  const [recommendedFilm, setRecommendedFilm] = useState<IMoovie>();
+
+  useEffect(() => {
+    let unmounted = false;
+    if (!unmounted) {
+      axios.get("http://localhost:3000/recommendations").then((res: any) => {
+        setRecommendedFilm(res.data.randomFilm);
+      });
+    }
+    return () => {
+      unmounted = true;
+    };
+  }, []);
+
+  console.log("filmm", recommendedFilm);
+
   const recommedationClick = (filmId?: string, thumbs?: boolean) => {
     navigation.navigate("FilmDetail", { filmId, thumbs });
   };
 
-  let randomFilm = FILMS[Math.floor(Math.random() * FILMS.length)];
+  const thumbsDownClick = (filmId?: string, thumbs?: boolean) => {
+    axios.get("http://localhost:3000/recommendations").then((res: any) => {
+      setRecommendedFilm(res.data.randomFilm);
+    });
+  };
+
+  // let randomFilm = FILMS[Math.floor(Math.random() * FILMS.length)];
 
   const RecommendedFilm = () => {
     return (
       <>
-        <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(randomFilm.id, undefined)}>
-          <Image style={styles.recommendedFilmPoster} source={{ uri: randomFilm.image }} />
+        <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(recommendedFilm?.id, undefined)}>
+          <Image style={styles.recommendedFilmPoster} source={{ uri: recommendedFilm?.image }} />
         </TouchableOpacity>
-        <Text style={styles.recommendedFilmHeader}>{randomFilm.title}</Text>
+        <Text style={styles.recommendedFilmHeader}>{recommendedFilm?.title}</Text>
         <View style={styles.recommendedFilmContent}>
-          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{randomFilm.year}</Text>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm?.year}</Text>
           <View style={styles.recommendedInfo}>
-            <Text style={styles.recommendedFilmMaturity}>{randomFilm.maturity.trim()}</Text>
+            <Text style={styles.recommendedFilmMaturity}>{recommendedFilm?.maturity.trim()}</Text>
           </View>
-          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{randomFilm.duration}</Text>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm?.duration}</Text>
         </View>
       </>
     );
@@ -38,13 +76,13 @@ const Recommendation = ({ navigation }: any) => {
         <ThumbsDown
           width="88px"
           onPress={() => {
-            // recommedationClick(undefined, false);
+            thumbsDownClick(undefined, false);
           }}
         />
         <ThumbsUp
           width="88px"
           onPress={() => {
-            recommedationClick(randomFilm.id, true);
+            recommedationClick(recommendedFilm?.id, true);
           }}
         />
       </View>
