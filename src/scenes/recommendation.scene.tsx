@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Dimensions } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, ActivityIndicator } from "react-native";
+import IMoovie from "../../model/IMoovie";
 import FILMS from "../data/films100.json";
 import ThumbsUp from "../components/ThumbsUp";
 import ThumbsDown from "../components/ThumbsDown";
@@ -7,28 +8,18 @@ import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
 const axios = require("axios");
 
-interface IMoovie {
-  id: string;
-  title: string;
-  type: string;
-  duration: string;
-  genres: Array<string>;
-  image: string;
-  maturity: string;
-  moods: Array<string>;
-  starring: Array<string>;
-  synopsis: string;
-  year: string;
-}
+const Recommendation = ({ navigation, route }: any) => {
+  const [moovie, setMoovie] = useState<IMoovie>();
+  const [loading, setLoading] = useState<boolean>(true);
 
-const Recommendation = ({ navigation }: any) => {
-  const [recommendedFilm, setRecommendedFilm] = useState<IMoovie>();
+  const { category, ageRange, selectedFilms } = route.params;
 
   useEffect(() => {
     let unmounted = false;
     if (!unmounted) {
-      axios.get("http://localhost:3000/recommendations").then((res: any) => {
-        setRecommendedFilm(res.data.randomFilm);
+      return axios.get(`http://localhost:3000/recommendations?age=${ageRange}&category=${category}&films=${selectedFilms}`).then((res: any) => {
+        setLoading(false);
+        setMoovie(res.data.randomFilm);
       });
     }
     return () => {
@@ -36,57 +27,68 @@ const Recommendation = ({ navigation }: any) => {
     };
   }, []);
 
-  console.log("filmm", recommendedFilm);
-
   const recommedationClick = (filmId?: string, thumbs?: boolean) => {
-    navigation.navigate("FilmDetail", { filmId, thumbs });
+    if (thumbs) {
+      navigation.navigate("FilmDetail", { filmId, thumbs });
+    } else {
+      setLoading(true);
+      return axios.post(`http://localhost:3000/recommendations?age=${ageRange}&category=${category}&films=${selectedFilms}`, { thumbs }).then((res: any) => {
+        setLoading(false);
+        setMoovie(res.data.randomFilm);
+      });
+    }
   };
-
-  const thumbsDownClick = (filmId?: string, thumbs?: boolean) => {
-    axios.get("http://localhost:3000/recommendations").then((res: any) => {
-      setRecommendedFilm(res.data.randomFilm);
-    });
-  };
-
-  // let randomFilm = FILMS[Math.floor(Math.random() * FILMS.length)];
 
   const RecommendedFilm = () => {
     return (
       <>
-        <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(recommendedFilm?.id, undefined)}>
-          <Image style={styles.recommendedFilmPoster} source={{ uri: recommendedFilm?.image }} />
+        <TouchableOpacity
+          style={styles.recommendedFilm}
+          onPress={() => {
+            recommedationClick(moovie?.id, true);
+          }}
+        >
+          <Image style={styles.recommendedFilmPoster} source={{ uri: moovie?.image }} />
         </TouchableOpacity>
-        <Text style={styles.recommendedFilmHeader}>{recommendedFilm?.title}</Text>
+        <Text style={styles.recommendedFilmHeader}>{moovie?.title}</Text>
         <View style={styles.recommendedFilmContent}>
-          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm?.year}</Text>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{moovie?.year}</Text>
           <View style={styles.recommendedInfo}>
-            <Text style={styles.recommendedFilmMaturity}>{recommendedFilm?.maturity.trim()}</Text>
+            <Text style={styles.recommendedFilmMaturity}>{moovie?.maturity.trim()}</Text>
           </View>
-          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm?.duration}</Text>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{moovie?.duration}</Text>
         </View>
       </>
     );
   };
 
   return (
-    <View style={[LAYOUT, styles.layout]}>
-      <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
-      <RecommendedFilm />
-      <View style={styles.thumbs}>
-        <ThumbsDown
-          width="88px"
-          onPress={() => {
-            thumbsDownClick(undefined, false);
-          }}
-        />
-        <ThumbsUp
-          width="88px"
-          onPress={() => {
-            recommedationClick(recommendedFilm?.id, true);
-          }}
-        />
-      </View>
-    </View>
+    <>
+      {loading ? (
+        <View style={[styles.loadingContainer, styles.loadingHorizontal]}>
+          <ActivityIndicator size="large" color={COLORS.red} />
+        </View>
+      ) : (
+        <View style={[LAYOUT, styles.layout]}>
+          <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
+          <RecommendedFilm />
+          <View style={styles.thumbs}>
+            <ThumbsDown
+              width="88px"
+              onPress={() => {
+                recommedationClick(moovie?.id, false);
+              }}
+            />
+            <ThumbsUp
+              width="88px"
+              onPress={() => {
+                recommedationClick(moovie?.id, true);
+              }}
+            />
+          </View>
+        </View>
+      )}
+    </>
   );
 };
 
@@ -154,6 +156,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     marginTop: 80
+  },
+  loadingContainer: {
+    backgroundColor: COLORS.black,
+    flex: 1,
+    justifyContent: "center"
+  },
+  loadingHorizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
   }
 });
 

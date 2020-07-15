@@ -5,6 +5,8 @@ import Button from "../components/Button";
 import SearchBar from "../components/SearchBar";
 import FILMS from "../data/films100.json";
 
+const axios = require("axios");
+
 const ChooseFavorites = ({ navigation, route }: any) => {
   const [selectedFilms, setSelectedFilms] = useState([] as string[]);
   const [search, setSearch] = useState<string>("");
@@ -34,7 +36,7 @@ const ChooseFavorites = ({ navigation, route }: any) => {
   };
   const { ageRange, category } = route.params;
   const onPress = () => {
-    navigation.navigate("Recommendation");
+    navigation.navigate("Recommendation", { category, ageRange, selectedFilms });
   };
 
   return (
