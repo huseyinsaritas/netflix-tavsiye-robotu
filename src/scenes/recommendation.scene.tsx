@@ -1,12 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, ActivityIndicator } from "react-native";
-import IMoovie from "../../model/IMoovie";
-import FILMS from "../data/films100.json";
-import ThumbsUp from "../components/ThumbsUp";
-import ThumbsDown from "../components/ThumbsDown";
+import { FilmService, VoteService } from "../services";
+import { IMoovie } from "../Model";
+import { ThumbsUp, ThumbsDown } from "../components";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
-
-const axios = require("axios");
 
 const Recommendation = ({ navigation, route }: any) => {
   const [moovie, setMoovie] = useState<IMoovie>();
@@ -15,27 +12,36 @@ const Recommendation = ({ navigation, route }: any) => {
   const { category, ageRange, selectedFilms } = route.params;
 
   useEffect(() => {
-    let unmounted = false;
-    if (!unmounted) {
-      return axios.get(`http://localhost:3000/recommendations?age=${ageRange}&category=${category}&films=${selectedFilms}`).then((res: any) => {
+    (async () => {
+      const films = await FilmService.GetRecommendedFilm(ageRange, category, selectedFilms);
+      if (films.success) {
         setLoading(false);
-        setMoovie(res.data.randomFilm);
-      });
-    }
-    return () => {
-      unmounted = true;
-    };
+        setMoovie(films.data);
+      } else {
+        //error
+      }
+    })();
   }, []);
+
+  const sendVote = (thumbs?: boolean) => {
+    (async () => {
+      const films = await VoteService.SendVote(ageRange, category, selectedFilms, thumbs);
+      if (films.success) {
+        if (!thumbs) setMoovie(films.data);
+        setLoading(false);
+      } else {
+        //error
+      }
+    })();
+  };
 
   const recommedationClick = (filmId?: string, thumbs?: boolean) => {
     if (thumbs) {
       navigation.navigate("FilmDetail", { filmId, thumbs });
+      sendVote(thumbs);
     } else {
       setLoading(true);
-      return axios.post(`http://localhost:3000/recommendations?age=${ageRange}&category=${category}&films=${selectedFilms}`, { thumbs }).then((res: any) => {
-        setLoading(false);
-        setMoovie(res.data.randomFilm);
-      });
+      sendVote(thumbs);
     }
   };
 
@@ -54,7 +60,7 @@ const Recommendation = ({ navigation, route }: any) => {
         <View style={styles.recommendedFilmContent}>
           <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{moovie?.year}</Text>
           <View style={styles.recommendedInfo}>
-            <Text style={styles.recommendedFilmMaturity}>{moovie?.maturity.trim()}</Text>
+            <Text style={styles.recommendedFilmMaturity}>{moovie?.maturity}</Text>
           </View>
           <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{moovie?.duration}</Text>
         </View>
