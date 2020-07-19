@@ -4,18 +4,18 @@ import FilmService from "../services/film.service";
 import IMoovie from "../Model/IMoovie";
 import { Button, SearchBar } from "../components";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
-import FILMS from "../data/films100.json";
 
 const ChooseFavorites = ({ navigation, route }: any) => {
   const [selectedFilms, setSelectedFilms] = useState([] as string[]);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
-  const [films, setFilms] = useState<IMoovie[]>();
+  const [films, setFilms] = useState<IMoovie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
       const films = await FilmService.GetFilms(search, page);
+      console.log(films);
       setLoading(false);
       if (films.success) {
         setFilms(films.data);
