@@ -6,8 +6,8 @@ class VoteService {
   constructor() {
     this._api = new APIService();
   }
-  async SendVote(age?: number, category?: string, films?: Array<string>, thumbs?: boolean) {
-    return await this._api.post(`/vote`, {}, { age, category, films, thumbs });
+  async SendVote(age: number, category: string, films: Array<number>, recommended: Array<number>, thumbs: boolean) {
+    return await this._api.post(`/vote`, {}, { age, category, films, recommended, thumbs });
   }
 }
 

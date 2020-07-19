@@ -6,28 +6,31 @@ import { ThumbsUp, ThumbsDown } from "../components";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
 const Recommendation = ({ navigation, route }: any) => {
-  const [moovie, setMoovie] = useState<IMoovie>();
+  const [recommendedFilm, setRecommendedFilm] = useState<IMoovie>();
   const [loading, setLoading] = useState<boolean>(true);
 
   const { category, ageRange, selectedFilms } = route.params;
+  const filmIds = selectedFilms.filter((selectedfilm: { id: any }) => selectedfilm.id);
 
   useEffect(() => {
     (async () => {
-      const films = await FilmService.GetRecommendedFilm(ageRange, category, selectedFilms);
+      const films = await FilmService.GetFilmRecommend(ageRange, category, filmIds);
       if (films.success) {
         setLoading(false);
-        setMoovie(films.data);
+        setRecommendedFilm(films.data);
       } else {
         //error
       }
     })();
   }, []);
 
-  const sendVote = (thumbs?: boolean) => {
+  const sendVote = (filmId: string, thumbs: boolean) => {
+    let filmIds: any = [];
+    filmIds = filmIds.push(parseInt(filmId.toString()));
     (async () => {
-      const films = await VoteService.SendVote(ageRange, category, selectedFilms, thumbs);
+      const films = await VoteService.SendVote(ageRange, category, selectedFilms, filmIds, thumbs);
       if (films.success) {
-        if (!thumbs) setMoovie(films.data);
+        if (!thumbs) setRecommendedFilm(films.data);
         setLoading(false);
       } else {
         //error
@@ -35,13 +38,13 @@ const Recommendation = ({ navigation, route }: any) => {
     })();
   };
 
-  const recommedationClick = (filmId?: string, thumbs?: boolean) => {
+  const recommedationClick = (filmId: string, thumbs: boolean) => {
     if (thumbs) {
       navigation.navigate("FilmDetail", { filmId, thumbs });
-      sendVote(thumbs);
+      sendVote(filmId, thumbs);
     } else {
       setLoading(true);
-      sendVote(thumbs);
+      sendVote(filmId, thumbs);
     }
   };
 
@@ -51,18 +54,18 @@ const Recommendation = ({ navigation, route }: any) => {
         <TouchableOpacity
           style={styles.recommendedFilm}
           onPress={() => {
-            recommedationClick(moovie?.id, true);
+            if (recommendedFilm) recommedationClick(recommendedFilm?.id, true);
           }}
         >
-          <Image style={styles.recommendedFilmPoster} source={{ uri: moovie?.image }} />
+          <Image style={styles.recommendedFilmPoster} source={{ uri: recommendedFilm?.image }} />
         </TouchableOpacity>
-        <Text style={styles.recommendedFilmHeader}>{moovie?.title}</Text>
+        <Text style={styles.recommendedFilmHeader}>{recommendedFilm?.title}</Text>
         <View style={styles.recommendedFilmContent}>
-          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{moovie?.year}</Text>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm?.year}</Text>
           <View style={styles.recommendedInfo}>
-            <Text style={styles.recommendedFilmMaturity}>{moovie?.maturity}</Text>
+            <Text style={styles.recommendedFilmMaturity}>{recommendedFilm?.maturity}</Text>
           </View>
-          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{moovie?.duration}</Text>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm?.duration}</Text>
         </View>
       </>
     );
@@ -82,13 +85,13 @@ const Recommendation = ({ navigation, route }: any) => {
             <ThumbsDown
               width="88px"
               onPress={() => {
-                recommedationClick(moovie?.id, false);
+                if (recommendedFilm) recommedationClick(recommendedFilm?.id, false);
               }}
             />
             <ThumbsUp
               width="88px"
               onPress={() => {
-                recommedationClick(moovie?.id, true);
+                if (recommendedFilm) recommedationClick(recommendedFilm?.id, true);
               }}
             />
           </View>

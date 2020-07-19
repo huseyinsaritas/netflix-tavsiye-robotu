@@ -6,12 +6,16 @@ class FilmService {
   constructor() {
     this._api = new APIService();
   }
-  async GetRecommendedFilm(age?: number, category?: string, films?: Array<string>) {
-    return await this._api.get(`/film/recommendation`, { age, category, films });
+  async GetFilmRecommend(age: number, category: string, films: Array<number>, excludeFilms?: Array<number>) {
+    return await this._api.post(`/film/recommendation`, {}, { age, category, films, excludeFilms });
   }
 
-  async GetFilms(page: number = 1, search?: string) {
-    return await this._api.get(`/film`, { page, search });
+  async GetFilms(search?: string, page: number = 1) {
+    return await this._api.get(`/film`, { search, page });
+  }
+
+  async GetFilmDetail(id: number) {
+    return await this._api.get(`film/:${id}`);
   }
 }
 

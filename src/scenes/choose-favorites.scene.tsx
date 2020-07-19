@@ -15,7 +15,7 @@ const ChooseFavorites = ({ navigation, route }: any) => {
 
   useEffect(() => {
     (async () => {
-      const films = await FilmService.GetFilms(page, search);
+      const films = await FilmService.GetFilms(search, page);
       setLoading(false);
       if (films.success) {
         setFilms(films.data);
@@ -23,7 +23,7 @@ const ChooseFavorites = ({ navigation, route }: any) => {
         //error
       }
     })();
-  }, [search]);
+  }, [search, page]);
 
   const FilmItem = ({ film }: any) => {
     const selected = selectedFilms.includes(film.id);
