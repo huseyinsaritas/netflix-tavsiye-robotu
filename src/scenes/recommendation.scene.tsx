@@ -1,44 +1,57 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, ActivityIndicator } from "react-native";
 import { FilmService, VoteService } from "../services";
-import { IMoovie } from "../Model";
+import { IFilm, FilmMaturityInfo } from "../models";
 import { ThumbsUp, ThumbsDown } from "../components";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
 const Recommendation = ({ navigation, route }: any) => {
-  const [recommendedFilm, setRecommendedFilm] = useState<IMoovie>();
+  const [recommendedFilm, setRecommendedFilm] = useState<IFilm>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [notFound, setNotFound] = useState<boolean>(false);
 
-  const { category, age, films } = route.params;
+  const { category, age, favorites } = route.params;
 
   useEffect(() => {
     (async () => {
-      const film = await FilmService.GetFilmRecommend(age, category, films);
+      const film = await FilmService.GetFilmRecommend(age, category, favorites);
       if (film.success) {
-        setLoading(false);
-        setRecommendedFilm(film.data);
+        if (film.data){
+          setRecommendedFilm(film.data);
+          setNotFound(false);
+        } else {
+          setRecommendedFilm(undefined);
+          setNotFound(true);
+        }
       } else {
-        //error
+        setNotFound(true);
       }
+      setLoading(false);
     })();
   }, []);
 
   const sendVote = (filmId: number, thumbs: boolean) => {
-    let filmIds: Array<number> = [filmId];
+    // let filmIds: Array<number> = [filmId];
     (async () => {
-      const vote = await VoteService.SendVote(age, category, films, filmIds, thumbs);
+      const vote = await VoteService.SendVote(age, category, favorites, filmId, thumbs, [filmId]);
       if (vote.success) {
-        if (!thumbs) setRecommendedFilm(vote.data);
-        setLoading(false);
+        if (vote.data.film){
+          if (!thumbs) setRecommendedFilm(vote.data.film);
+          setNotFound(false);
+        } else {
+          setRecommendedFilm(undefined);
+          setNotFound(true);
+        }
       } else {
-        //error
+        setNotFound(true);
       }
+      setLoading(false);
     })();
   };
 
   const recommedationClick = (filmId: number, vote: boolean) => {
     if (vote) {
-      navigation.navigate("FilmDetail", { filmId });
+      navigation.navigate("FilmDetail", { film: recommendedFilm });
       sendVote(filmId, vote);
     } else {
       setLoading(true);
@@ -49,50 +62,55 @@ const Recommendation = ({ navigation, route }: any) => {
   const RecommendedFilm = () => {
     return (
       <>
+        {!!recommendedFilm && 
+        <>
         <TouchableOpacity
           style={styles.recommendedFilm}
-          onPress={() => {
-            if (recommendedFilm) recommedationClick(recommendedFilm?.id, true);
-          }}
+          onPress={() => recommedationClick(recommendedFilm.id, true) }
         >
-          <Image style={styles.recommendedFilmPoster} source={{ uri: recommendedFilm?.image }} />
+          <Image style={styles.recommendedFilmPoster} source={{ uri: recommendedFilm.image }} />
         </TouchableOpacity>
-        <Text style={styles.recommendedFilmHeader}>{recommendedFilm?.title}</Text>
+        <Text style={styles.recommendedFilmHeader}>{recommendedFilm.title}</Text>
         <View style={styles.recommendedFilmContent}>
-          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm?.year}</Text>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm.year}</Text>
           <View style={styles.recommendedInfo}>
-            <Text style={styles.recommendedFilmMaturity}>{recommendedFilm?.maturity}</Text>
+            <Text style={styles.recommendedFilmMaturity}>{FilmMaturityInfo(recommendedFilm.maturity)}</Text>
           </View>
-          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm?.duration}</Text>
+          <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm.duration}</Text>
         </View>
+        </>
+        }
       </>
     );
   };
 
   return (
     <>
-      {loading ? (
-        <View style={[styles.loadingContainer, styles.loadingHorizontal]}>
+      {loading && (
+        <View style={styles.loading}>
           <ActivityIndicator size="large" color={COLORS.red} />
         </View>
-      ) : (
+      )}
+      {(!loading && !notFound && !!recommendedFilm) && (
         <View style={[LAYOUT, styles.layout]}>
           <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
           <RecommendedFilm />
           <View style={styles.thumbs}>
             <ThumbsDown
               width="88px"
-              onPress={() => {
-                if (recommendedFilm) recommedationClick(recommendedFilm?.id, false);
-              }}
+              onPress={() => recommedationClick(recommendedFilm.id, false) }
             />
             <ThumbsUp
               width="88px"
-              onPress={() => {
-                if (recommendedFilm) recommedationClick(recommendedFilm?.id, true);
-              }}
+              onPress={() => recommedationClick(recommendedFilm.id, true) }
             />
           </View>
+        </View>
+      )}
+      {(!loading && notFound) && (
+        <View>
+          <Text>Dünyanın sonu değil!</Text>
+          <Text>Sizin için bir öneri bulamadık. Dilerseniz geri dönüp favori filmlerinizi değiştirip tekrar şansınızı deneyebilirsiniz.</Text>
         </View>
       )}
     </>
@@ -159,21 +177,21 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   thumbs: {
+    position: 'absolute',
+    bottom: 0,
+    left: 10,
+    right: 10,
     flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems: "center",
-    marginTop: 80
+    alignItems: "center"
   },
-  loadingContainer: {
+  loading: {
     backgroundColor: COLORS.black,
     flex: 1,
-    justifyContent: "center"
-  },
-  loadingHorizontal: {
+    justifyContent: "center",
     flexDirection: "row",
-    justifyContent: "space-around",
     padding: 10
-  }
+  },
 });
 
 export default Recommendation;

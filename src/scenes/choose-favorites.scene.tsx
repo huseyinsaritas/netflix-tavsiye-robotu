@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator } from "react-native";
 import FilmService from "../services/film.service";
-import IFilm from "../Model/IMoovie";
+import { IFilm } from "../models";
 import { Button, SearchBar } from "../components";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
 const ChooseFavorites = ({ navigation, route }: any) => {
-  const [selectedFilms, setSelectedFilms] = useState([] as string[]);
+  const [selectedFilms, setSelectedFilms] = useState<number[]>([]);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
   const [films, setFilms] = useState<IFilm[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [scrollLoading, setScrollLoading] = useState<boolean>(false);
+
+  const { age, category } = route.params;
 
   useEffect(() => {
     (async () => {
       const films = await FilmService.GetFilms(search, page);
       setLoading(false);
+      setScrollLoading(false);
       if (films.success) {
-        setFilms(films.data);
+        setFilms(prev => prev.concat(films.data));
       } else {
         //error
       }
@@ -37,7 +41,7 @@ const ChooseFavorites = ({ navigation, route }: any) => {
     );
   };
 
-  const selectFilm = (id: string) => {
+  const selectFilm = (id: number) => {
     let _selectedFilms = [...selectedFilms];
     const i = _selectedFilms.indexOf(id);
     if (i === -1) {
@@ -47,15 +51,25 @@ const ChooseFavorites = ({ navigation, route }: any) => {
     }
     setSelectedFilms(_selectedFilms);
   };
-  const { age, category } = route.params;
+
   const onPress = () => {
-    navigation.navigate("Recommendation", { category, age, films: selectedFilms });
+    navigation.navigate("Recommendation", { category, age, favorites: selectedFilms });
   };
+
+  const RenderScrollLoading = () => {
+    return (
+      <>
+      {scrollLoading && 
+        <ActivityIndicator size="large" color={COLORS.red} />
+      }
+      </>
+    )
+  }
 
   return (
     <>
       {loading ? (
-        <View style={[styles.favoritesLoadingContainer, styles.favoritesLoadingHorizontal]}>
+        <View style={styles.loading}>
           <ActivityIndicator size="large" color={COLORS.red} />
         </View>
       ) : (
@@ -63,7 +77,15 @@ const ChooseFavorites = ({ navigation, route }: any) => {
           <Text style={styles.pageTitle}>Favori Seçin</Text>
           <Text style={styles.pageDesc}>Biraz yardımcı olmanız için en az {selectedFilms.length}/3 tane beğendiğiniz film veya diziyi işaretleyin.</Text>
           <SearchBar value={search} onChangeText={input => setSearch(input)} placeholder="Ara..." />
-          <FlatList data={films} style={styles.films} numColumns={3} renderItem={({ item }) => <FilmItem film={item} />} keyExtractor={item => item.id} />
+          <FlatList
+            data={films}
+            style={styles.films}
+            numColumns={3}
+            renderItem={({ item }) => <FilmItem film={item} />}
+            onEndReached={() => { setScrollLoading(true); setPage(page + 1) }}
+            keyExtractor={item => item.id.toString()}
+            ListFooterComponent={() => <RenderScrollLoading />}
+          />
           {selectedFilms.length > 2 ? <Button title="TAVSİYE AL" onPress={onPress} /> : null}
         </View>
       )}
@@ -129,16 +151,13 @@ const styles = StyleSheet.create({
     height: 24,
     zIndex: 90
   },
-  favoritesLoadingContainer: {
+  loading: {
     backgroundColor: COLORS.black,
     flex: 1,
-    justifyContent: "center"
-  },
-  favoritesLoadingHorizontal: {
+    justifyContent: "center",
     flexDirection: "row",
-    justifyContent: "space-around",
     padding: 10
-  }
+  },
 });
 
 export default ChooseFavorites;

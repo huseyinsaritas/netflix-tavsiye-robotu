@@ -1,10 +1,11 @@
 import axiosLib, { AxiosInstance } from "axios";
-import { IResponse } from "../Model";
+import { IResponse } from "../models";
 import { GenerateQueryString } from "./helper.service";
 
 export class APIService {
   private axios: AxiosInstance;
-  public baseURL = "http://netflixtavsiyerobotu.marsilyalidokiscileri.com";
+  // public baseURL = "http://netflixtavsiyerobotu.marsilyalidokiscileri.com";
+  public baseURL = "http://192.168.2.241:3000";
 
   constructor() {
     this.axios = axiosLib.create();

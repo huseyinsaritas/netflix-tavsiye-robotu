@@ -1,47 +1,44 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image, Linking } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { StyleSheet, ScrollView, Text, View, Image, Linking } from "react-native";
 import Button from "../components/Button";
-import FILMS from "../data/films100.json";
+import { IFilm, FilmMaturityInfo } from "../models";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
 const FilmDetail = ({ route }: any) => {
-  const { filmId } = route.params;
-  const catchFilm = FILMS.find(film => film.id === filmId);
-  console.log("aaa", catchFilm);
-  console.log(route.params);
+  const film: IFilm = route.params.film;
+
   const onPress = () => {
-    Linking.openURL("https://www.netflix.com/tr-en/title/" + filmId);
+    Linking.openURL("https://www.netflix.com/tr-en/title/" + film.netflix_id);
   };
   return (
     <View style={[LAYOUT, styles.layout]}>
       <ScrollView>
         <View style={styles.moovie}>
-          <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: catchFilm?.image }} />
+          <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: film.image }} />
         </View>
-        <Text style={styles.moovieTitle}>{catchFilm?.title}</Text>
+        <Text style={styles.moovieTitle}>{film.title}</Text>
         <View style={styles.detailContent}>
-          <Text style={[styles.info, styles.filmInfo]}>{catchFilm?.year}</Text>
+          <Text style={[styles.info, styles.filmInfo]}>{film.year}</Text>
           <View style={styles.info}>
-            <Text style={styles.maturity}>{catchFilm?.maturity}</Text>
+            <Text style={styles.maturity}>{FilmMaturityInfo(film.maturity)}</Text>
           </View>
-          <Text style={[styles.info, styles.filmInfo]}>{catchFilm?.duration}</Text>
+          <Text style={[styles.info, styles.filmInfo]}>{film.duration}</Text>
         </View>
-        <Text style={styles.moovieDescription}>{catchFilm?.synopsis}</Text>
+        <Text style={styles.moovieDescription}>{film.synopsis}</Text>
         <View style={styles.detailHeaders}>
           <View style={styles.sortInfoPosition}>
             <Text style={styles.sortInfoHeader}>Kategoriler:</Text>
-            <Text style={styles.sortInfo}>{catchFilm?.genres.join(", ")}</Text>
+            <Text style={styles.sortInfo}>{film.genres.join(", ")}</Text>
           </View>
           <View style={styles.sortInfoPosition}>
             <Text style={styles.sortInfoHeader}>Oyuncular:</Text>
-            <Text style={styles.sortInfo}>{catchFilm?.starring.join(", ")}</Text>
+            <Text style={styles.sortInfo}>{film.starring.join(", ")}</Text>
           </View>
         </View>
       </ScrollView>
-      <View style={styles.watchNetflix}>
-        <Button title="NETFLIX'TE İZLE" style={styles.detailButton} onPress={onPress} />
-      </View>
+      <Button title="NETFLIX'TE İZLE" style={styles.detailButton} onPress={onPress} />
+      {/* <View style={styles.watchNetflix}>
+      </View> */}
     </View>
   );
 };
@@ -120,7 +117,9 @@ const styles = StyleSheet.create({
   },
   detailButton: {
     position: "absolute",
-    bottom: 0
+    bottom: 0,
+    left: 1,
+    right: 1
   },
   detailHeaders: {
     alignItems: "flex-start",
