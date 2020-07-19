@@ -1,4 +1,4 @@
-import IMoovie from "./IMoovie";
+import IFilm from "./IMoovie";
 import IResponse from "./IResponse";
 
-export { IMoovie, IResponse };
+export { IFilm as IMoovie, IResponse };

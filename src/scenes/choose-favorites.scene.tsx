@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator } from "react-native";
 import FilmService from "../services/film.service";
-import IMoovie from "../Model/IMoovie";
+import IFilm from "../Model/IMoovie";
 import { Button, SearchBar } from "../components";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
@@ -9,13 +9,12 @@ const ChooseFavorites = ({ navigation, route }: any) => {
   const [selectedFilms, setSelectedFilms] = useState([] as string[]);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
-  const [films, setFilms] = useState<IMoovie[]>([]);
+  const [films, setFilms] = useState<IFilm[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
       const films = await FilmService.GetFilms(search, page);
-      console.log(films);
       setLoading(false);
       if (films.success) {
         setFilms(films.data);
@@ -48,9 +47,9 @@ const ChooseFavorites = ({ navigation, route }: any) => {
     }
     setSelectedFilms(_selectedFilms);
   };
-  const { ageRange, category } = route.params;
+  const { age, category } = route.params;
   const onPress = () => {
-    navigation.navigate("Recommendation", { category, ageRange, selectedFilms });
+    navigation.navigate("Recommendation", { category, age, films: selectedFilms });
   };
 
   return (

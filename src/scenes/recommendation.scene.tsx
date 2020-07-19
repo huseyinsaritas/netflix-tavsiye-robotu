@@ -9,28 +9,26 @@ const Recommendation = ({ navigation, route }: any) => {
   const [recommendedFilm, setRecommendedFilm] = useState<IMoovie>();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const { category, ageRange, selectedFilms } = route.params;
-  const filmIds = selectedFilms.filter((selectedfilm: { id: any }) => selectedfilm.id);
+  const { category, age, films } = route.params;
 
   useEffect(() => {
     (async () => {
-      const films = await FilmService.GetFilmRecommend(ageRange, category, filmIds);
-      if (films.success) {
+      const film = await FilmService.GetFilmRecommend(age, category, films);
+      if (film.success) {
         setLoading(false);
-        setRecommendedFilm(films.data);
+        setRecommendedFilm(film.data);
       } else {
         //error
       }
     })();
   }, []);
 
-  const sendVote = (filmId: string, thumbs: boolean) => {
-    let filmIds: any = [];
-    filmIds = filmIds.push(parseInt(filmId.toString()));
+  const sendVote = (filmId: number, thumbs: boolean) => {
+    let filmIds: Array<number> = [filmId];
     (async () => {
-      const films = await VoteService.SendVote(ageRange, category, selectedFilms, filmIds, thumbs);
-      if (films.success) {
-        if (!thumbs) setRecommendedFilm(films.data);
+      const vote = await VoteService.SendVote(age, category, films, filmIds, thumbs);
+      if (vote.success) {
+        if (!thumbs) setRecommendedFilm(vote.data);
         setLoading(false);
       } else {
         //error
@@ -38,13 +36,13 @@ const Recommendation = ({ navigation, route }: any) => {
     })();
   };
 
-  const recommedationClick = (filmId: string, thumbs: boolean) => {
-    if (thumbs) {
-      navigation.navigate("FilmDetail", { filmId, thumbs });
-      sendVote(filmId, thumbs);
+  const recommedationClick = (filmId: number, vote: boolean) => {
+    if (vote) {
+      navigation.navigate("FilmDetail", { filmId });
+      sendVote(filmId, vote);
     } else {
       setLoading(true);
-      sendVote(filmId, thumbs);
+      sendVote(filmId, vote);
     }
   };
 

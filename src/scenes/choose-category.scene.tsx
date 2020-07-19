@@ -5,19 +5,18 @@ import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 import Button from "../components/Button";
 
 const ChooseCategory = ({ navigation, route }: any) => {
-  const { ageRange } = route.params;
-  const onPress = (category: string) => {
-    navigation.navigate("ChooseFavorites", { category, ageRange });
+  const { age } = route.params;
+  const onPress = (category: number) => {
+    navigation.navigate("ChooseFavorites", { category, age });
   };
 
   return (
     <View style={[LAYOUT, styles.layout]}>
       <Text style={styles.categoryTitle}>Hangi tarz içerik istiyorsunuz?</Text>
       <View style={styles.buttonsContainer}>
-        <Button title="FİLM" onPress={() => onPress("Moovie")} />
-        <Button title="DİZİ" onPress={() => onPress("Serie")} />
-        <Button title="BELGESEL" onPress={() => onPress("Documentary")} />
-        <Button title="TÜMÜ" onPress={() => onPress("All")} />
+        <Button title="FİLM" onPress={() => onPress(0)} />
+        <Button title="DİZİ" onPress={() => onPress(1)} />
+        <Button title="TÜMÜ" onPress={() => onPress(2)} />
       </View>
     </View>
   );

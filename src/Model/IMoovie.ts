@@ -1,7 +1,7 @@
-interface IMoovie {
-  id: string;
+interface IFilm {
+  id: number;
   title: string;
-  type: string;
+  category: string;
   duration: string;
   genres: Array<string>;
   image: string;
@@ -12,4 +12,4 @@ interface IMoovie {
   year: string;
 }
 
-export default IMoovie;
+export default IFilm;

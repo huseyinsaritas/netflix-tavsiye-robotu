@@ -5,18 +5,18 @@ import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 import Button from "../components/Button";
 
 const ChooseAgeRange = ({ navigation }: any) => {
-  const onPress = (ageRange: number) => {
-    navigation.navigate("ChooseCategory", { ageRange });
+  const onPress = (age: number) => {
+    navigation.navigate("ChooseCategory", { age });
   };
 
   return (
     <View style={[LAYOUT, styles.layout]}>
       <Text style={styles.ageRangeTitle}>Yaş aralığınız?</Text>
       <View style={styles.buttonsContainer}>
-        <Button title="13-18" onPress={() => onPress(0)} />
-        <Button title="18-25" onPress={() => onPress(1)} />
-        <Button title="25-35" onPress={() => onPress(2)} />
-        <Button title="35+" onPress={() => onPress(3)} />
+        <Button title="13-" onPress={() => onPress(0)} />
+        <Button title="13-18" onPress={() => onPress(1)} />
+        <Button title="18-25" onPress={() => onPress(2)} />
+        <Button title="25+" onPress={() => onPress(3)} />
       </View>
     </View>
   );

@@ -15,8 +15,8 @@ export class APIService {
   async get(url: string, query?: any): Promise<IResponse> {
     try {
       const q = GenerateQueryString(query);
-      const data: any = await this.axios.get(`${this.baseURL}${url}?${q}`);
-      return { success: true, data };
+      const req: any = await this.axios.get(`${this.baseURL}${url}?${q}`);
+      return { success: true, data: req.data };
     } catch (error) {
       return { success: false };
     }
@@ -25,8 +25,8 @@ export class APIService {
   async post(url: string, query?: any, body?: any): Promise<IResponse> {
     try {
       const q = GenerateQueryString(query);
-      const data: any = await this.axios.post(`${this.baseURL}${url}?${q}`, body);
-      return { success: true, data };
+      const req: any = await this.axios.post(`${this.baseURL}${url}?${q}`, body);
+      return { success: true, data: req.data };
     } catch (error) {
       return { success: false };
     }
