@@ -18,12 +18,12 @@
     ],
     "android": {
       "package": "com.ayiyazilim.netflixtavsiyerobotu",
-      "versionCode": 2,
+      "versionCode": 3,
       "permissions": []
     },
     "ios": {
       "bundleIdentifier": "com.ayiyazilim.netflixtavsiyerobotu",
-      "buildNumber": "0.2.0",
+      "buildNumber": "0.3.0",
       "supportsTablet": true
     },
     "web": {
