@@ -42,8 +42,6 @@ const Recommendation = ({ navigation, route }: any) => {
           setRecommendedFilm(undefined);
           setNotFound(true);
         }
-      } else {
-        setNotFound(true);
       }
       setLoading(false);
     })();

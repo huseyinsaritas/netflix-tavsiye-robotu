@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView, View, Image, Linking } from "react-native";
-import { Button, Text } from "../components";
+import { Button, Text, GoBack } from "../components";
 import { IFilm, FilmMaturityInfo } from "../models";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
-const FilmDetail = ({ route }: any) => {
+const FilmDetail = ({ route, navigation }: any) => {
   const film: IFilm = route.params.film;
 
   const onPress = () => {
@@ -15,6 +15,7 @@ const FilmDetail = ({ route }: any) => {
       <ScrollView>
         <View style={styles.moovie}>
           <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: film.image }} />
+          <GoBack style={styles.goBack} width="30px" onPress={() => navigation.navigate("Recommendation")} />
         </View>
         <Text category="h1" style={styles.moovieTitle}>
           {film.title}
@@ -53,6 +54,7 @@ const styles = StyleSheet.create({
     paddingTop: 80
   },
   moovie: {
+    position: "relative",
     borderRadius: 6,
     margin: 6,
     alignItems: "center",
@@ -129,12 +131,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-evenly"
   },
-  watchNetflix: {
-    textAlign: "center",
+
+  goBack: {
     position: "absolute",
-    bottom: 0,
-    left: 1,
-    right: 1
+    top: 2,
+    left: 2
   }
 });
 
