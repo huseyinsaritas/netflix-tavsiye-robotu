@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Mascot from "../components/Mascot";
-import Button from "../components/Button";
+import { Mascot, Button } from "../components";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
 const Intro = ({ navigation }: any) => {
@@ -12,7 +11,7 @@ const Intro = ({ navigation }: any) => {
   return (
     <View style={[LAYOUT, styles.layout]}>
       <Mascot width={100} />
-      <Text style={styles.text}>Netflix Tavsiye Robotu</Text>
+      <Text style={styles.text}>NETFLIX TAVSİYE ROBOTU</Text>
       <Button title="Başla" onPress={onPress} />
     </View>
   );
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
     fontSize: 44,
     color: COLORS.red,
     fontFamily: FONTS.bungee,
-    textAlign: "center"
+    textAlign: "center",
   }
 });
 export default Intro;
