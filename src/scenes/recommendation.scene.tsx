@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, ActivityIndicator } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image, Dimensions, ActivityIndicator } from "react-native";
 import { FilmService, VoteService } from "../services";
 import { IFilm, FilmMaturityInfo } from "../models";
-import { ThumbsUp, ThumbsDown, Button } from "../components";
+import { ThumbsUp, ThumbsDown, Button, Text } from "../components";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
 const Recommendation = ({ navigation, route }: any) => {
@@ -67,13 +67,15 @@ const Recommendation = ({ navigation, route }: any) => {
             <TouchableOpacity style={styles.recommendedFilm} onPress={() => recommedationClick(recommendedFilm.id, true)}>
               <Image style={styles.recommendedFilmPoster} source={{ uri: recommendedFilm.image }} />
             </TouchableOpacity>
-            <Text style={styles.recommendedFilmHeader}>{recommendedFilm.title}</Text>
+            <Text category="h2" style={styles.recommendedFilmHeader}>
+              {recommendedFilm.title}
+            </Text>
             <View style={styles.recommendedFilmContent}>
-              <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm.year}</Text>
+              <Text style={styles.recommendedInfo}>{recommendedFilm.year}</Text>
               <View style={styles.recommendedInfo}>
                 <Text style={styles.recommendedFilmMaturity}>{FilmMaturityInfo(recommendedFilm.maturity)}</Text>
               </View>
-              <Text style={[styles.recommendedInfo, styles.recommendedFilmInfo]}>{recommendedFilm.duration}</Text>
+              <Text style={styles.recommendedInfo}>{recommendedFilm.duration}</Text>
             </View>
           </>
         )}
@@ -90,7 +92,9 @@ const Recommendation = ({ navigation, route }: any) => {
       )}
       {!loading && !notFound && !!recommendedFilm && (
         <View style={[LAYOUT, styles.layout]}>
-          <Text style={styles.pageTitle}>Tavsiye Edilen Film</Text>
+          <Text category="h1" style={styles.pageTitle}>
+            Tavsiye Edilen Film
+          </Text>
           <RecommendedFilm />
           <View style={styles.thumbs}>
             <ThumbsDown width="88px" onPress={() => recommedationClick(recommendedFilm.id, false)} />
@@ -100,9 +104,13 @@ const Recommendation = ({ navigation, route }: any) => {
       )}
       {!loading && notFound && (
         <View style={[LAYOUT, styles.layout]}>
-          <Text style={styles.notFoundTitle}>Dünyanın sonu değil!</Text>
-          <Text style={styles.notFoundContent}>Sizin için bir öneri bulamadık. Dilerseniz geri dönüp favori filmlerinizi değiştirip tekrar şansınızı deneyebilirsiniz.</Text>
-          <Button title="GERi DöN" style={styles.goBackButton} onPress={() => navigation.navigate("ChooseFavorites")} />
+          <Text category="h1" style={styles.notFoundTitle}>
+            Dünyanın sonu değil!
+          </Text>
+          <Text category="h6" style={styles.notFoundContent}>
+            Sizin için bir öneri bulamadık. Dilerseniz geri dönüp favori filmlerinizi değiştirip tekrar şansınızı deneyebilirsiniz.
+          </Text>
+          <Button title="GERİ DöN" style={styles.goBackButton} onPress={() => navigation.navigate("ChooseFavorites")} />
         </View>
       )}
     </>
@@ -116,22 +124,22 @@ const styles = StyleSheet.create({
     height: Dimensions.get("screen").height
   },
   pageTitle: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin700,
-    fontSize: 32,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin700,
+    // fontSize: 32,
     textAlign: "center"
   },
   notFoundTitle: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin700,
-    fontSize: 32,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin700,
+    // fontSize: 32,
     textAlign: "center",
     marginTop: "50%"
   },
   notFoundContent: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
-    fontSize: 16,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
+    // fontSize: 16,
     textAlign: "center",
     margin: 30
   },
@@ -151,9 +159,9 @@ const styles = StyleSheet.create({
     height: 300
   },
   recommendedFilmHeader: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
-    fontSize: 32,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
+    // fontSize: 32,
     margin: 6,
     textAlign: "center"
   },
@@ -163,10 +171,10 @@ const styles = StyleSheet.create({
     margin: 0,
     alignItems: "center"
   },
-  recommendedFilmInfo: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400
-  },
+  // recommendedFilmInfo: {
+  //   color: COLORS.white,
+  //   fontFamily: FONTS.cabin400
+  // },
   recommendedInfo: {
     marginTop: 10,
     marginBottom: 6,
@@ -176,15 +184,16 @@ const styles = StyleSheet.create({
     paddingRight: 11
   },
   recommendedFilmMaturity: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
     paddingRight: 5,
     paddingLeft: 5,
-    borderWidth: 1
+    borderWidth: 1,
+    borderColor: COLORS.white
   },
   thumbs: {
     position: "absolute",
-    bottom: 0,
+    bottom: 10,
     left: 10,
     right: 10,
     flexDirection: "row",

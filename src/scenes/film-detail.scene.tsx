@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView, Text, View, Image, Linking } from "react-native";
-import Button from "../components/Button";
+import { StyleSheet, ScrollView, View, Image, Linking } from "react-native";
+import { Button, Text } from "../components";
 import { IFilm, FilmMaturityInfo } from "../models";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
@@ -16,22 +16,28 @@ const FilmDetail = ({ route }: any) => {
         <View style={styles.moovie}>
           <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: film.image }} />
         </View>
-        <Text style={styles.moovieTitle}>{film.title}</Text>
+        <Text category="h1" style={styles.moovieTitle}>
+          {film.title}
+        </Text>
         <View style={styles.detailContent}>
-          <Text style={[styles.info, styles.filmInfo]}>{film.year}</Text>
+          <Text style={styles.info}>{film.year}</Text>
           <View style={styles.info}>
             <Text style={styles.maturity}>{FilmMaturityInfo(film.maturity)}</Text>
           </View>
-          <Text style={[styles.info, styles.filmInfo]}>{film.duration}</Text>
+          <Text style={styles.info}>{film.duration}</Text>
         </View>
         <Text style={styles.moovieDescription}>{film.synopsis}</Text>
         <View style={styles.detailHeaders}>
           <View style={styles.sortInfoPosition}>
-            <Text style={styles.sortInfoHeader}>Kategoriler:</Text>
+            <Text category="h6" style={styles.sortInfoHeader}>
+              Kategoriler:
+            </Text>
             <Text style={styles.sortInfo}>{film.genres.join(", ")}</Text>
           </View>
           <View style={styles.sortInfoPosition}>
-            <Text style={styles.sortInfoHeader}>Oyuncular:</Text>
+            <Text category="h6" style={styles.sortInfoHeader}>
+              Oyuncular:
+            </Text>
             <Text style={styles.sortInfo}>{film.starring.join(", ")}</Text>
           </View>
         </View>
@@ -66,13 +72,13 @@ const styles = StyleSheet.create({
     marginRight: 9,
     paddingRight: 11
   },
-  filmInfo: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400
-  },
+  // filmInfo: {
+  //   color: COLORS.white,
+  //   fontFamily: FONTS.cabin400
+  // },
   maturity: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
     paddingRight: 5,
     paddingLeft: 5,
     borderWidth: 1,
@@ -89,22 +95,22 @@ const styles = StyleSheet.create({
     flex: 1
   },
   sortInfoHeader: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
-    margin: 6,
-    fontSize: 16
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
+    // fontSize: 16,
+    margin: 6
   },
   sortInfo: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
-    fontSize: 14,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
+    // fontSize: 14,
     margin: 6,
     flex: 1
   },
   moovieTitle: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
-    fontSize: 32,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
+    // fontSize: 32,
     margin: 6
   },
   detailContent: {
