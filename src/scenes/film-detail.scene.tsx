@@ -37,8 +37,6 @@ const FilmDetail = ({ route }: any) => {
         </View>
       </ScrollView>
       <Button title="NETFLIX'TE İZLE" style={styles.detailButton} onPress={onPress} />
-      {/* <View style={styles.watchNetflix}>
-      </View> */}
     </View>
   );
 };
