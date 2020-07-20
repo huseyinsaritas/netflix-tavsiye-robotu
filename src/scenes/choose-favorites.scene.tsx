@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator } from "react-native";
 import FilmService from "../services/film.service";
 import { IFilm } from "../models";
@@ -12,21 +12,101 @@ const ChooseFavorites = ({ navigation, route }: any) => {
   const [films, setFilms] = useState<IFilm[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [scrollLoading, setScrollLoading] = useState<boolean>(false);
+  const [lockScroll, setLockScroll] = useState<boolean>(false);
+  const [infoText, setInfoText] = useState<string|null>(null);
 
   const { age, category } = route.params;
 
   useEffect(() => {
     (async () => {
-      const films = await FilmService.GetFilms(search, page);
-      setLoading(false);
-      setScrollLoading(false);
-      if (films.success) {
-        setFilms(prev => prev.concat(films.data));
-      } else {
-        //error
+      
+      if (searchTimer.current) clearTimeout(searchTimer.current);
+
+      if (page === 0){
+        setPage(1);
+        return;
       }
+
+      const res = await FilmService.GetFilms("", page);
+      setScrollLoading(false);
+      setTimeout(() => {
+        setLockScroll(false);
+      }, 2000);
+
+      if (res.success) {
+
+        if (page === 1){
+          setFilms(res.data);
+        } else {
+          setFilms(prev => prev.concat(res.data));
+        }
+
+        setInfoText(null);
+
+      } else {
+        setInfoText('Filmler alınılırken bir hata oluştu! Lütfen tekrar deneyiniz.');
+      }
+
+      setLoading(false);
+
     })();
-  }, [search, page]);
+  }, [page]);
+
+  const firstSearch = useRef(true);
+  const searchTimer = useRef<number|null>(null);
+  useEffect(() => {
+
+    if (firstSearch.current) {
+      firstSearch.current = false;
+      return;
+    }
+
+    if (searchTimer.current) clearTimeout(searchTimer.current);
+
+    if (search.trim().length > 2){
+      
+      searchTimer.current = setTimeout( async() => {
+
+        setLoading(true);
+        const res = await FilmService.GetFilms(search, 1);
+        setScrollLoading(false);
+        setTimeout(() => {
+          setLockScroll(false);
+        }, 2000);
+
+        if (res.success) {
+
+          if (res.data.length){
+            setInfoText(null);
+            setFilms(res.data);
+          } else {
+            setInfoText('Aramanızla ilgili bir film bulunamadı.');
+          }
+
+        } else {
+          setInfoText('Filmler alınılırken bir hata oluştu! Lütfen tekrar deneyiniz.');
+        }
+
+        setLoading(false);
+
+      }, 400);
+
+    } else if (search.trim().length === 0) {
+
+      setLoading(true);
+      setInfoText(null);
+      setPage(0);
+
+    } else {
+
+      searchTimer.current = setTimeout(() => {
+        setLoading(false);
+        setInfoText('Lütfen en az 3 karakter giriniz.');
+      }, 400)
+      
+    }
+
+  }, [search]);
 
   const FilmItem = ({ film }: any) => {
     const selected = selectedFilms.includes(film.id);
@@ -56,6 +136,14 @@ const ChooseFavorites = ({ navigation, route }: any) => {
     navigation.navigate("Recommendation", { category, age, favorites: selectedFilms });
   };
 
+  const onScrollEnd = () => {
+    if (!lockScroll && films.length > 9 && search.trim().length < 3){
+      setScrollLoading(true);
+      setLockScroll(true);
+      setPage(page + 1);
+    }
+  }
+
   const RenderScrollLoading = () => {
     return (
       <>
@@ -67,29 +155,34 @@ const ChooseFavorites = ({ navigation, route }: any) => {
   }
 
   return (
-    <>
+    <View style={[LAYOUT, styles.layout]}>
+      <Text style={styles.pageTitle}>Favori Seçin</Text>
+      <Text style={styles.pageDesc}>Biraz yardımcı olmanız için en az {selectedFilms.length}/3 tane beğendiğiniz film veya diziyi işaretleyin.</Text>
+      <SearchBar value={search} onChangeText={input => setSearch(input)} placeholder="Ara..." />
+      
       {loading ? (
         <View style={styles.loading}>
           <ActivityIndicator size="large" color={COLORS.red} />
         </View>
       ) : (
-        <View style={[LAYOUT, styles.layout]}>
-          <Text style={styles.pageTitle}>Favori Seçin</Text>
-          <Text style={styles.pageDesc}>Biraz yardımcı olmanız için en az {selectedFilms.length}/3 tane beğendiğiniz film veya diziyi işaretleyin.</Text>
-          <SearchBar value={search} onChangeText={input => setSearch(input)} placeholder="Ara..." />
+       <>
+        {!!!infoText ? (
           <FlatList
             data={films}
             style={styles.films}
             numColumns={3}
             renderItem={({ item }) => <FilmItem film={item} />}
-            onEndReached={() => { setScrollLoading(true); setPage(page + 1) }}
-            keyExtractor={item => item.id.toString()}
+            onEndReached={onScrollEnd}
+            keyExtractor={(item, i) => i.toString()}
             ListFooterComponent={() => <RenderScrollLoading />}
-          />
-          {selectedFilms.length > 2 ? <Button title="TAVSİYE AL" onPress={onPress} /> : null}
-        </View>
+          /> ): (
+            <Text style={styles.infoText}>{infoText}</Text>
+          )}
+       </> 
       )}
-    </>
+
+      {selectedFilms.length > 2 ? <Button title="TAVSİYE AL" onPress={onPress} /> : null}
+    </View>
   );
 };
 
@@ -108,6 +201,12 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: FONTS.cabin400,
     textAlign: "center"
+  },
+  infoText: {
+    color: COLORS.white,
+    fontFamily: FONTS.cabin400,
+    textAlign: "center",
+    marginTop: 20
   },
   films: {
     marginTop: 20

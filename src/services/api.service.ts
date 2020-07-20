@@ -4,8 +4,8 @@ import { GenerateQueryString } from "./helper.service";
 
 export class APIService {
   private axios: AxiosInstance;
-  // public baseURL = "http://netflixtavsiyerobotu.marsilyalidokiscileri.com";
-  public baseURL = "http://192.168.2.241:3000";
+  public baseURL = "http://netflixtavsiyerobotu.marsilyalidokiscileri.com";
+  // public baseURL = "http://192.168.2.241:3000";
 
   constructor() {
     this.axios = axiosLib.create();
