@@ -3,12 +3,12 @@ import { StyleSheet, View, TouchableOpacity, Image, Dimensions, ActivityIndicato
 import { FilmService, VoteService } from "../services";
 import { IFilm, FilmMaturityInfo } from "../models";
 import { ThumbsUp, ThumbsDown, Button, Text } from "../components";
-import { COLORS, FONTS, LAYOUT } from "../styles/styles";
+import { COLORS, LAYOUT } from "../styles/styles";
 
 const Recommendation = ({ navigation, route }: any) => {
   const [recommendedFilm, setRecommendedFilm] = useState<IFilm>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [notFound, setNotFound] = useState<boolean>(true);
+  const [notFound, setNotFound] = useState<boolean>(false);
 
   const { category, age, favorites } = route.params;
 
