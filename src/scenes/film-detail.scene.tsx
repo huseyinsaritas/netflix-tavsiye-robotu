@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView, Text, View, Image, Linking } from "react-native";
-import Button from "../components/Button";
+import { StyleSheet, ScrollView, View, Image, Linking } from "react-native";
+import { Button, Text, GoBack } from "../components";
 import { IFilm, FilmMaturityInfo } from "../models";
 import { COLORS, FONTS, LAYOUT } from "../styles/styles";
 
-const FilmDetail = ({ route }: any) => {
+const FilmDetail = ({ route, navigation }: any) => {
   const film: IFilm = route.params.film;
 
   const onPress = () => {
@@ -15,30 +15,35 @@ const FilmDetail = ({ route }: any) => {
       <ScrollView>
         <View style={styles.moovie}>
           <Image style={styles.moovieImage} resizeMode="cover" source={{ uri: film.image }} />
+          <GoBack style={styles.goBack} width="30px" onPress={() => navigation.navigate("Recommendation")} />
         </View>
-        <Text style={styles.moovieTitle}>{film.title}</Text>
+        <Text category="h1" style={styles.moovieTitle}>
+          {film.title}
+        </Text>
         <View style={styles.detailContent}>
-          <Text style={[styles.info, styles.filmInfo]}>{film.year}</Text>
+          <Text style={styles.info}>{film.year}</Text>
           <View style={styles.info}>
             <Text style={styles.maturity}>{FilmMaturityInfo(film.maturity)}</Text>
           </View>
-          <Text style={[styles.info, styles.filmInfo]}>{film.duration}</Text>
+          <Text style={styles.info}>{film.duration}</Text>
         </View>
         <Text style={styles.moovieDescription}>{film.synopsis}</Text>
         <View style={styles.detailHeaders}>
           <View style={styles.sortInfoPosition}>
-            <Text style={styles.sortInfoHeader}>Kategoriler:</Text>
+            <Text category="h6" style={styles.sortInfoHeader}>
+              Kategoriler:
+            </Text>
             <Text style={styles.sortInfo}>{film.genres.join(", ")}</Text>
           </View>
           <View style={styles.sortInfoPosition}>
-            <Text style={styles.sortInfoHeader}>Oyuncular:</Text>
+            <Text category="h6" style={styles.sortInfoHeader}>
+              Oyuncular:
+            </Text>
             <Text style={styles.sortInfo}>{film.starring.join(", ")}</Text>
           </View>
         </View>
       </ScrollView>
       <Button title="NETFLIX'TE İZLE" style={styles.detailButton} onPress={onPress} />
-      {/* <View style={styles.watchNetflix}>
-      </View> */}
     </View>
   );
 };
@@ -49,6 +54,7 @@ const styles = StyleSheet.create({
     paddingTop: 80
   },
   moovie: {
+    position: "relative",
     borderRadius: 6,
     margin: 6,
     alignItems: "center",
@@ -68,13 +74,13 @@ const styles = StyleSheet.create({
     marginRight: 9,
     paddingRight: 11
   },
-  filmInfo: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400
-  },
+  // filmInfo: {
+  //   color: COLORS.white,
+  //   fontFamily: FONTS.cabin400
+  // },
   maturity: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
     paddingRight: 5,
     paddingLeft: 5,
     borderWidth: 1,
@@ -91,22 +97,22 @@ const styles = StyleSheet.create({
     flex: 1
   },
   sortInfoHeader: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
-    margin: 6,
-    fontSize: 16
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
+    // fontSize: 16,
+    margin: 6
   },
   sortInfo: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
-    fontSize: 14,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
+    // fontSize: 14,
     margin: 6,
     flex: 1
   },
   moovieTitle: {
-    color: COLORS.white,
-    fontFamily: FONTS.cabin400,
-    fontSize: 32,
+    // color: COLORS.white,
+    // fontFamily: FONTS.cabin400,
+    // fontSize: 32,
     margin: 6
   },
   detailContent: {
@@ -125,12 +131,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-evenly"
   },
-  watchNetflix: {
-    textAlign: "center",
+
+  goBack: {
     position: "absolute",
-    bottom: 0,
-    left: 1,
-    right: 1
+    top: 2,
+    left: 2
   }
 });
 
