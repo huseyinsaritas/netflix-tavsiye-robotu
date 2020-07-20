@@ -139,7 +139,7 @@ const ChooseFavorites = ({ navigation, route }: any) => {
       <Text category="h1" style={styles.pageTitle}>
         Favori Seçin
       </Text>
-      <Text style={styles.pageDesc}>Biraz yardımcı olmanız için en az {selectedFilms.length}/3 tane beğendiğiniz film veya diziyi işaretleyin.</Text>{" "}
+      <Text style={styles.pageDesc}>Biraz yardımcı olmanız için en az {selectedFilms.length}/3 tane beğendiğiniz film veya diziyi işaretleyin.</Text>
       <SearchBar value={search} onChangeText={input => setSearch(input)} placeholder="Ara..." />
       {loading ? (
         <View style={styles.loading}>
