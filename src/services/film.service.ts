@@ -10,12 +10,13 @@ class FilmService {
 
   async GetFilms(search: string, page: number = 1) {
 
-    if (this._cache[`page:${page}|search:${search}`]){
-      return Promise.resolve(this._cache[`page:${page}|search:${search}`]);
+    const key = `page:${page}|search:${search}`;
+    if (this._cache[key]){
+      return Promise.resolve(this._cache[key]);
     }
 
-    this._cache[`page:${page}|search:${search}`] = await this._api.get(`/film`, { search, page });
-    return this._cache[`page:${page}|search:${search}`];
+    this._cache[key] = await this._api.get(`/film`, { search, page });
+    return this._cache[key];
 
   }
 
