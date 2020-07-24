@@ -9,6 +9,7 @@ const Recommendation = ({ navigation, route }: any) => {
   const [recommendedFilm, setRecommendedFilm] = useState<IFilm>();
   const [loading, setLoading] = useState<boolean>(true);
   const [notFound, setNotFound] = useState<boolean>(false);
+  const [filmIds, setFilmIds] = useState<number[]>([]);
 
   const { category, age, favorites } = route.params;
 
@@ -31,9 +32,13 @@ const Recommendation = ({ navigation, route }: any) => {
   }, []);
 
   const sendVote = (filmId: number, thumbs: boolean) => {
-    // let filmIds: Array<number> = [filmId];
+    let filmIdsList = [...filmIds];
+    if (!filmIdsList.includes(filmId)) {
+      filmIdsList.push(filmId);
+      setFilmIds(filmIdsList);
+    }
     (async () => {
-      const vote = await VoteService.SendVote(age, category, favorites, filmId, thumbs, [filmId]);
+      const vote = await VoteService.SendVote(age, category, favorites, filmId, thumbs, filmIds);
       if (vote.success) {
         if (vote.data.film) {
           if (!thumbs) setRecommendedFilm(vote.data.film);
