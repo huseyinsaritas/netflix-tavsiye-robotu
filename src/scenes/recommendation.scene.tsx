@@ -9,6 +9,7 @@ const Recommendation = ({ navigation, route }: any) => {
   const [recommendedFilm, setRecommendedFilm] = useState<IFilm>();
   const [loading, setLoading] = useState<boolean>(true);
   const [notFound, setNotFound] = useState<boolean>(false);
+  const [filmIds, setFilmIds] = useState<number[]>([]);
 
   const { category, age, favorites } = route.params;
 
@@ -31,19 +32,23 @@ const Recommendation = ({ navigation, route }: any) => {
   }, []);
 
   const sendVote = (filmId: number, thumbs: boolean) => {
-    // let filmIds: Array<number> = [filmId];
+    let filmIdsList = [...filmIds];
+    if (!filmIdsList.includes(filmId)) {
+      filmIdsList.push(filmId);
+      setFilmIds(filmIdsList);
+    }
     (async () => {
-      const vote = await VoteService.SendVote(age, category, favorites, filmId, thumbs, [filmId]);
+      const vote = await VoteService.SendVote(age, category, favorites, filmId, thumbs, filmIds);
       if (vote.success) {
         if (vote.data.film) {
           if (!thumbs) setRecommendedFilm(vote.data.film);
           setNotFound(false);
         } else {
-          setRecommendedFilm(undefined);
           setNotFound(true);
         }
       }
       setLoading(false);
+      setNotFound(false);
     })();
   };
 
@@ -56,6 +61,15 @@ const Recommendation = ({ navigation, route }: any) => {
       sendVote(filmId, vote);
     }
   };
+
+  let title;
+  if (category === 0) {
+    title = "Film";
+  } else if (category === 1) {
+    title = "Dizi";
+  } else {
+    title = "İçerik";
+  }
 
   const RecommendedFilm = () => {
     return (
@@ -88,10 +102,10 @@ const Recommendation = ({ navigation, route }: any) => {
           <ActivityIndicator size="large" color={COLORS.red} />
         </View>
       )}
-      {!loading && !notFound && !!recommendedFilm && (
+      {!loading && !notFound && recommendedFilm && (
         <View style={[LAYOUT, styles.layout]}>
           <Text category="h1" style={styles.pageTitle}>
-            Tavsiye Edilen Film
+            {`Tavsiye Edilen ${title}`}
           </Text>
           <RecommendedFilm />
           <View style={styles.thumbs}>
@@ -100,7 +114,7 @@ const Recommendation = ({ navigation, route }: any) => {
           </View>
         </View>
       )}
-      {!loading && notFound && (
+      {!loading && notFound && !recommendedFilm && (
         <View style={[LAYOUT, styles.layout]}>
           <Text category="h1" style={styles.notFoundTitle}>
             Dünyanın sonu değil!

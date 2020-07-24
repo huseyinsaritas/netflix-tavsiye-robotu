@@ -15,9 +15,9 @@ const ChooseCategory = ({ navigation, route }: any) => {
         Hangi tarz içerik istiyorsunuz?
       </Text>
       <View style={styles.buttonsContainer}>
-        <Button title="TÜMÜ" onPress={() => onPress(2)} />
         <Button title="FİLM" onPress={() => onPress(0)} />
         <Button title="DİZİ" onPress={() => onPress(1)} />
+        <Button title="TÜMÜ" onPress={() => onPress(2)} />
       </View>
     </View>
   );
