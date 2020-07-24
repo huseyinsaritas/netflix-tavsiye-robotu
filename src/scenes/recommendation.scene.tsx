@@ -39,11 +39,11 @@ const Recommendation = ({ navigation, route }: any) => {
           if (!thumbs) setRecommendedFilm(vote.data.film);
           setNotFound(false);
         } else {
-          setRecommendedFilm(undefined);
           setNotFound(true);
         }
       }
       setLoading(false);
+      setNotFound(false);
     })();
   };
 
@@ -56,6 +56,15 @@ const Recommendation = ({ navigation, route }: any) => {
       sendVote(filmId, vote);
     }
   };
+
+  let title;
+  if (category === 0) {
+    title = "Film";
+  } else if (category === 1) {
+    title = "Dizi";
+  } else {
+    title = "İçerik";
+  }
 
   const RecommendedFilm = () => {
     return (
@@ -88,10 +97,10 @@ const Recommendation = ({ navigation, route }: any) => {
           <ActivityIndicator size="large" color={COLORS.red} />
         </View>
       )}
-      {!loading && !notFound && !!recommendedFilm && (
+      {!loading && !notFound && recommendedFilm && (
         <View style={[LAYOUT, styles.layout]}>
           <Text category="h1" style={styles.pageTitle}>
-            Tavsiye Edilen Film
+            {`Tavsiye Edilen ${title}`}
           </Text>
           <RecommendedFilm />
           <View style={styles.thumbs}>
@@ -100,7 +109,7 @@ const Recommendation = ({ navigation, route }: any) => {
           </View>
         </View>
       )}
-      {!loading && notFound && (
+      {!loading && notFound && !recommendedFilm && (
         <View style={[LAYOUT, styles.layout]}>
           <Text category="h1" style={styles.notFoundTitle}>
             Dünyanın sonu değil!
