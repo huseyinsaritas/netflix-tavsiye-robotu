@@ -5,11 +5,16 @@ import { IFilm, FilmMaturityInfo } from "../models";
 import { ThumbsUp, ThumbsDown, Button, Text } from "../components";
 import { COLORS, LAYOUT } from "../styles/styles";
 
+interface IVote {
+  vote: boolean,
+  excludes: number[]
+}
+
 const Recommendation = ({ navigation, route }: any) => {
-  const [recommendedFilm, setRecommendedFilm] = useState<IFilm>();
+  const [recommendedFilm, setRecommendedFilm] = useState<IFilm | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [notFound, setNotFound] = useState<boolean>(false);
-  const [filmIds, setFilmIds] = useState<number[]>([]);
+  const [vote, setVote] = useState<IVote>({ vote: false, excludes: [] });
 
   const { category, age, favorites } = route.params;
 
@@ -21,7 +26,7 @@ const Recommendation = ({ navigation, route }: any) => {
           setRecommendedFilm(film.data);
           setNotFound(false);
         } else {
-          setRecommendedFilm(undefined);
+          setRecommendedFilm(null);
           setNotFound(true);
         }
       } else {
@@ -31,34 +36,46 @@ const Recommendation = ({ navigation, route }: any) => {
     })();
   }, []);
 
-  const sendVote = (filmId: number, thumbs: boolean) => {
-    let filmIdsList = [...filmIds];
-    if (!filmIdsList.includes(filmId)) {
-      filmIdsList.push(filmId);
-      setFilmIds(filmIdsList);
-    }
+  useEffect(() => {
+
     (async () => {
-      const vote = await VoteService.SendVote(age, category, favorites, filmId, thumbs, filmIds);
-      if (vote.success) {
-        if (vote.data.film) {
-          if (!thumbs) setRecommendedFilm(vote.data.film);
-          setNotFound(false);
+      if (recommendedFilm){
+        const res = await VoteService.SendVote(age, category, favorites, recommendedFilm.id, vote.vote, vote.excludes);
+        if (res.success) {
+          if (vote.vote){
+            navigation.navigate("FilmDetail", { film: recommendedFilm });
+          } else {
+
+            if (res.data.film) {
+              setRecommendedFilm(res.data.film);
+              setNotFound(false);
+            } else {
+              setRecommendedFilm(null);
+              setNotFound(true);
+            }
+
+          }
         } else {
           setNotFound(true);
         }
+        setLoading(false);
       }
-      setLoading(false);
-      setNotFound(false);
     })();
-  };
 
-  const recommedationClick = (filmId: number, vote: boolean) => {
-    if (vote) {
-      navigation.navigate("FilmDetail", { film: recommendedFilm });
-      sendVote(filmId, vote);
+  }, [vote])
+
+  const recommedationClick = (filmId: number, thumbs: boolean) => {
+    if (thumbs) {
+      setVote({ vote: true, excludes: vote.excludes });
     } else {
       setLoading(true);
-      sendVote(filmId, vote);
+      
+      if (!vote.excludes.includes(filmId)) {
+        let _excludes = [...vote.excludes];
+        _excludes.push(filmId);
+        setVote({ vote: false, excludes: _excludes });
+      }
+      
     }
   };
 
@@ -102,7 +119,7 @@ const Recommendation = ({ navigation, route }: any) => {
           <ActivityIndicator size="large" color={COLORS.red} />
         </View>
       )}
-      {!loading && !notFound && recommendedFilm && (
+      {!loading && !notFound && !!recommendedFilm && (
         <View style={[LAYOUT, styles.layout]}>
           <Text category="h1" style={styles.pageTitle}>
             {`Tavsiye Edilen ${title}`}
@@ -131,27 +148,18 @@ const Recommendation = ({ navigation, route }: any) => {
 
 const styles = StyleSheet.create({
   layout: {
+    flex: 1,
     padding: 20,
     paddingTop: 80,
-    height: Dimensions.get("screen").height
   },
   pageTitle: {
-    // color: COLORS.white,
-    // fontFamily: FONTS.cabin700,
-    // fontSize: 32,
     textAlign: "center"
   },
   notFoundTitle: {
-    // color: COLORS.white,
-    // fontFamily: FONTS.cabin700,
-    // fontSize: 32,
     textAlign: "center",
     marginTop: "50%"
   },
   notFoundContent: {
-    // color: COLORS.white,
-    // fontFamily: FONTS.cabin400,
-    // fontSize: 16,
     textAlign: "center",
     margin: 30
   },
@@ -171,9 +179,6 @@ const styles = StyleSheet.create({
     height: 300
   },
   recommendedFilmHeader: {
-    // color: COLORS.white,
-    // fontFamily: FONTS.cabin400,
-    // fontSize: 32,
     margin: 6,
     textAlign: "center"
   },
@@ -183,10 +188,6 @@ const styles = StyleSheet.create({
     margin: 0,
     alignItems: "center"
   },
-  // recommendedFilmInfo: {
-  //   color: COLORS.white,
-  //   fontFamily: FONTS.cabin400
-  // },
   recommendedInfo: {
     marginTop: 10,
     marginBottom: 6,
@@ -196,8 +197,6 @@ const styles = StyleSheet.create({
     paddingRight: 11
   },
   recommendedFilmMaturity: {
-    // color: COLORS.white,
-    // fontFamily: FONTS.cabin400,
     paddingRight: 5,
     paddingLeft: 5,
     borderWidth: 1,
