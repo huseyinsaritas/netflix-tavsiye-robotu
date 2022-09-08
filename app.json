@@ -16,12 +16,12 @@
     "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.ayiyazilim.filmtavsiyerobotu",
-      "versionCode": 6,
+      "versionCode": 7,
       "permissions": []
     },
     "ios": {
       "bundleIdentifier": "com.ayiyazilim.filmtavsiyerobotu",
-      "buildNumber": "0.6.0",
+      "buildNumber": "0.7.0",
       "supportsTablet": true
     },
     "web": {
