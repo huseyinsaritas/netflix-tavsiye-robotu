@@ -13,7 +13,12 @@ import FilmDetail from "../scenes/film-detail.scene";
 
 export const AppNavigation = () => (
   <NavigationContainer>
-    <Stack.Navigator headerMode="none" initialRouteName="Intro">
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="Intro"
+    >
       <Stack.Screen name="Intro" component={Intro} />
       <Stack.Screen name="ChooseAgeRange" component={ChooseAgeRange} />
       <Stack.Screen name="ChooseCategory" component={ChooseCategory} />

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Netflix Tavsiye Robotu",
-    "slug": "netflixtavsiyerobotu",
+    "name": "Film Tavsiye Robotu",
+    "slug": "filmtavsiyerobotu",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,21 +13,24 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
-      "package": "com.ayiyazilim.netflixtavsiyerobotu",
-      "versionCode": 3,
+      "package": "com.ayiyazilim.filmtavsiyerobotu",
+      "versionCode": 6,
       "permissions": []
     },
     "ios": {
-      "bundleIdentifier": "com.ayiyazilim.netflixtavsiyerobotu",
-      "buildNumber": "0.3.0",
+      "bundleIdentifier": "com.ayiyazilim.filmtavsiyerobotu",
+      "buildNumber": "0.6.0",
       "supportsTablet": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b315fb05-bfa3-4a29-9541-edc740e063ce"
+      }
     }
   }
 }

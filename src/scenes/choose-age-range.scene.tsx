@@ -27,18 +27,18 @@ const styles = StyleSheet.create({
   layout: {
     alignItems: "center",
     justifyContent: "center",
-    padding: 20
+    padding: 20,
   },
   ageRangeTitle: {
     // color: COLORS.white,
     // fontFamily: FONTS.cabin700,
     // fontSize: 32,
     textAlign: "center",
-    marginBottom: 20
+    marginBottom: 20,
   },
   buttonsContainer: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
 export default ChooseAgeRange;

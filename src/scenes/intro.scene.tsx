@@ -11,7 +11,7 @@ const Intro = ({ navigation }: any) => {
   return (
     <View style={[LAYOUT, styles.layout]}>
       <Mascot width={100} />
-      <Text style={styles.text}>NETFLIX TAVSİYE ROBOTU</Text>
+      <Text style={styles.text}>FILM TAVSİYE ROBOTU</Text>
       <Button title="Başla" onPress={onPress} />
     </View>
   );
@@ -21,13 +21,13 @@ const styles = StyleSheet.create({
   layout: {
     alignItems: "center",
     justifyContent: "center",
-    padding: 20
+    padding: 20,
   },
   text: {
     fontSize: 44,
     color: COLORS.red,
     fontFamily: FONTS.bungee,
     textAlign: "center",
-  }
+  },
 });
 export default Intro;
