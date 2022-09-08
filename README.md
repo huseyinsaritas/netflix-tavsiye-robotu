@@ -21,4 +21,8 @@ eas.json > build.development.ios.simulator = true
 
 # eas update --branch preview --message "animated"
 
+# eas build --profile production --platform android
+
+# eas build --profile production --platform ios
+
 Project @ayiyazilim
